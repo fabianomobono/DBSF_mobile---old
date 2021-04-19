@@ -20,13 +20,10 @@ export const LoginPage = ({navigation}) => {
   const storeData = async (value) => {
     
     try {
-       await AsyncStorage.setItem('@storage_Key', value)
-       const v = await AsyncStorage.getItem('@storage_Key')
-       console.log('this is v called in storedata in LoginPage.login')
-       console.log(v)
+       await AsyncStorage.setItem('@storage_Key', value)   
     } catch (e) {
       // saving error
-      console.log('Error logging in')
+      alert('Error logging in')
     }
   }
 
@@ -54,7 +51,7 @@ export const LoginPage = ({navigation}) => {
         storeData(data.token)
         // update the redux store
         dispatch(login_token(data.token))
-        navigation.navigate('Home')
+        
         }
       })  
   }
@@ -85,19 +82,29 @@ export const LoginPage = ({navigation}) => {
   )
 }
 
-
+// sign up page component
 export function SignUpScreen({navigation}) {
   
   const [date, setDate] = useState(new Date());
   const [mode, setMode] = useState('date');
   const [show, setShow] = useState(true);
-  
+
+  // sign up form variables
+  const [firstName, setFirstName] = useState('')
+  const [lastName, setLastName] = useState('')
+  const [username, setUsername] = useState('')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [confirmation, setConfirmation] = useState('')
+  const dispatch = useDispatch()
+  // hands change in the date input
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate || date;
     setShow(Platform.OS === 'ios');
     setDate(currentDate);
   };
-
+  
+  //show the date input
   const showMode = (currentMode) => {
     setShow(true);
     setMode(currentMode);
@@ -109,21 +116,77 @@ export function SignUpScreen({navigation}) {
     
   };
 
+  
   const signUp = () => {  
-    alert('hgjk')
+    // make sure all the fields are provided
+    if(firstName === '' || lastName === '' || username === '' || email === '' || password === '' || confirmation === ''){
+      alert('All fields must be provided')
+      return false
+    }
+    else if (password !== confirmation) {
+      alert('Passwords do not match')
+      return false
+    }
+
+
+    console.log(date)
+    // start the sign up process in the server
+    fetch('https://dbsf.herokuapp.com/api/mobileSignUp', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      credentials: 'same-origin',
+      body: JSON.stringify({
+        username: username,
+        first_name: firstName,
+        last_name: lastName,
+        email: email,
+        password: password,
+        confirmation: confirmation,
+        dob: date
+      })
+    }).then(res => res.json()).then(r => {
+
+      // if the signUp token comes back
+      if (r.response === 'HURRAYYY user and token have been created...sending back token') {
+        const token = r.token
+
+        // store the token in the redux store
+       
+        dispatch(login_token(token))
+
+        // set the token in  async storage on device
+        const storeData = async (value) => {
     
+          try {
+             await AsyncStorage.setItem('@storage_Key', value)   
+          } catch (e) {
+            // saving error
+            alert('Error logging in')
+          }
+        }
+        storeData(token)
+        
+      }
+      else {
+        console.log(r.response)
+      }
+    })
+    
+
   }
 
   return (
     <ScrollView>
       <View style={{alignItems: 'center'}}>
         <Text style={styles.title}>Sign up for DBSF </Text>
-        <TextInput style={styles.textInput} placeholder='First Name'/>
-        <TextInput style={styles.textInput} placeholder='Last Name'/>
-        <TextInput style={styles.textInput} placeholder='Username'/>
-        <TextInput style={styles.textInput} placeholder='Email'/>
-        <TextInput style={styles.textInput} placeholder='Password'/>
-        <TextInput style={styles.textInput} placeholder='Confirmation'/>
+        <TextInput style={styles.textInput} placeholder='First Name' value={firstName} onChangeText={text => setFirstName(text)}/>
+        <TextInput style={styles.textInput} placeholder='Last Name' value={lastName} onChangeText={text => setLastName(text)}/>
+        <TextInput style={styles.textInput} placeholder='Username' value={username} onChangeText={text => setUsername(text)}/>
+        <TextInput style={styles.textInput} placeholder='Email' value={email} onChangeText={text => setEmail(text)}/>
+        <TextInput style={styles.textInput} placeholder='Password' secureTextEntry={true} value={password} onChangeText={text => setPassword(text)}/>
+        <TextInput style={styles.textInput} placeholder='Confirmation' secureTextEntry={true} value={confirmation} onChangeText={text => setConfirmation(text)}/>
         <TouchableOpacity onPress={showDatepicker} style={styles.textInputTouch}>
           <Text style={styles.centerText}>Date of Birth</Text>
           <View>
@@ -137,7 +200,6 @@ export function SignUpScreen({navigation}) {
           />     
         </View>   
         </TouchableOpacity>
-       
         <TouchableOpacity onPressOut={signUp} style={styles.button}>
           <Text style={{fontSize: 20 , color: 'white'}}>Sign Up</Text>
         </TouchableOpacity>
@@ -146,8 +208,7 @@ export function SignUpScreen({navigation}) {
   );
 }
 
-
-
+// logout component
 export function logoutScreen({navigation}) {
   const dispatch = useDispatch()
   const logout_user = () => {
@@ -163,8 +224,6 @@ export function logoutScreen({navigation}) {
     }
     dispatch(logout())
     removeData()
-   
-   
   }
 
   return (
