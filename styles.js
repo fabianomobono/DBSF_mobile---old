@@ -74,5 +74,11 @@ export const styles = StyleSheet.create({
       width: 50,
       height: 50,
       borderRadius: 50
+    },
+    empty_list_message: {
+      margin: 20,
+      fontSize: 20,
+      padding: 10,
+      color: 'grey'
     }
   });

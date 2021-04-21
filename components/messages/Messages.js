@@ -14,14 +14,17 @@ export const Messages = () => {
   return(
     <ScrollView>
       <View>
-        {info.friends.map(friend => 
+        {info.friends.length > 0 ? info.friends.map(friend => 
           <Conversation 
             last_message_date={friend.last_message_date} 
             user={friend.user} 
             profile_pic={friend.profile_pic}
             key={friend.id}
             id={friend.id}
-            />)}
+            />)
+          :
+          <Text style={styles.empty_list_message}>Uh Oh! You don't have any Friends yet. Try to add them via the search box and they will appear here when they accept your friend request.</Text>
+        }
       </View> 
     </ScrollView>
   )

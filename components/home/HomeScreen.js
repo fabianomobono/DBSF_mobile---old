@@ -8,7 +8,7 @@ import { Messages } from '../messages/Messages'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { MaterialIcons, FontAwesome5 } from '@expo/vector-icons';
 import { Profile } from '../profile/Profile';
-import { update_info } from '../info/infoSlice'
+import { update_info, selectInfo, add_post } from '../info/infoSlice'
 import { logoutScreen } from '../login/login';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -30,10 +30,10 @@ export const Main = () => {
           }
 
           else if(route.name === 'Profile'){
-            return <FontAwesome5 name="home" size={24} color="white" />
+            return <MaterialIcons name="face" size={24} color="white" />
           }
           else if (route.name === 'Logout'){
-            return <FontAwesome5 name="home" size={24} color="white" />
+            return <MaterialIcons name="logout" size={24} color="white" />
           }
         },
       })}
@@ -61,11 +61,12 @@ export const Main = () => {
 }
 
 
-export function HomeScreen() {
-  
+export function HomeScreen({navigation}) {
+
+  // get posts from the redux-store
+  const posts = useSelector(selectInfo).posts
   // define current text in the textInput and the list of posts
   const [text, setText] = useState('')
-  const [posts, setPosts] = useState([])
   const [profile_pic, setProfile_pic] = useState('')
   const [user, setUser] = useState('')
   // redux stuff
@@ -73,7 +74,7 @@ export function HomeScreen() {
   const dispatch = useDispatch()
   // get the token from the store
   const token = useSelector(selectToken)
-
+  
   // when the component mounts request data from the server
   useEffect( () =>{
     console.log('useEffect got called...and here is the token')
@@ -89,7 +90,7 @@ export function HomeScreen() {
           credentials: 'same-origin',  
         }).then(res => res.json()).then(r => {
           
-          setPosts(r.hello.posts)
+          
           setProfile_pic(r.hello.profile_pic)
           setUser(r.hello.user)
           console.log('useEffect in HomeScreen Component has been called...this gets triggered when the get info fetch comes back')
@@ -97,14 +98,31 @@ export function HomeScreen() {
 
           // add the information to the redux store
           dispatch(update_info(r.hello))
+          
         })
-      .catch(r => alert('something went wrong'));
+      .catch(r => alert('something went wronghnjmkmk'));
   },[])
   
   // add a new post to the feed
-  const new_post = () => {
-    var p = posts
-    setPosts([{text: text, author: user, author_picture: profile_pic}, ...p])
+   const new_post = () => {  
+    const time = new Date()
+    // send the post to the server so it can be saved in the database
+    fetch('https://dbsf.herokuapp.com/api/new_post', {
+      method: 'POST',
+      headers: {
+        'Authorization': 'Token '.concat(token),
+        'Content-type': 'application/json'
+      },
+      body: JSON.stringify({text: text})
+    })
+    .then(res => res.json())
+    .then(res => {
+      const r = res.response
+      // when the response comes back update the redux store with the new posts
+      dispatch(add_post({text: r.text, author: r.author, author_picture: profile_pic, date: r.date, id: r.id, comments: r.comments}))
+      console.log('redux store was updated...i think')
+    })
+    .catch(r => console.log('this does not work'))
     setText('')
   }
 
@@ -134,10 +152,6 @@ export function HomeScreen() {
   return (
     <View>
       <View style={homeStyle.container}>
-        <TouchableOpacity onPress={getData}>
-          <Text>alert Token</Text>
-        </TouchableOpacity>
-        
         <Image source={{uri: profile_pic}} style={styles.smallImage} />
         <TextInput
           value={text} 
@@ -146,16 +160,19 @@ export function HomeScreen() {
           onSubmitEditing={new_post} placeholder='Write a post'/> 
       </View>
       <ScrollView style={{height: '90%'}} >
-      <TouchableOpacity onPress={tFromS}>
-          <Text>alert Token  from store</Text>
-        </TouchableOpacity>
        <View>
-        {posts.map(t => 
-          <Post 
-            text={t.text} 
-            author={t.author } 
-            profile_pic={t.author_picture}
-            date={t.date}/>)}
+        {
+          posts.length  > 0 ? posts.map(t => 
+            <Post
+              navigation={navigation}
+              key={t.id} 
+              text={t.text} 
+              author={t.author } 
+              profile_pic={t.author_picture}
+              date={t.date}/>)
+          : 
+            <Text style={styles.empty_list_message}>No posts here. Try to search for friends in the search box and add them as friends. You'll see posts appear over time!</Text>
+        }
        </View>
       </ScrollView>
     </View>
@@ -187,6 +204,6 @@ const homeStyle = StyleSheet.create({
     flex: 1,
     borderWidth: 4,
     height: 1,
-   
-  }
+  },
+  
 })

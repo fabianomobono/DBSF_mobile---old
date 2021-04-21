@@ -227,9 +227,9 @@ export function logoutScreen({navigation}) {
   }
 
   return (
-    <View>
-      <TouchableOpacity onPressOut={logout_user}>
-        <Text>Log Out!</Text>
+    <View style={{ alignItems: 'center', flex: 1, justifyContent: 'center'}}>
+      <TouchableOpacity onPressOut={logout_user} style={styles.button}>
+        <Text style={{padding: 10, fontSize: 20 , color: 'white', fontWeight: 'bold'}}>Log Out!</Text>
       </TouchableOpacity>
     </View>
   )

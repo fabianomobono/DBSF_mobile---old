@@ -38,16 +38,21 @@ export const Profile = () => {
           <Text style={profileStyle.text}>Date of Birth: {info.dob}</Text>
         </View>
       </View>
-      <View>
-        <Text>Posts</Text>
-        {own_posts.map(t => 
+      <View >
+        {own_posts.length ? own_posts.map(t => 
           <Post
+            key={t.id}
             text={t.text} 
             author={t.author } 
             profile_pic={t.author_picture}
             date={t.date} 
           />
-        )}
+          )
+          :
+          <View style={profileStyle.container}>
+            <Text style={styles.empty_list_message}>{info.user} has not written any posts yet...check back later</Text>
+          </View>
+        }
       </View>
     </ScrollView>
     

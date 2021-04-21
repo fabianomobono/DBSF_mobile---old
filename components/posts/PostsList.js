@@ -3,6 +3,7 @@ import React from 'react'
 import { FlatList, Text, View, StyleSheet, Image } from 'react-native'
 import { styles } from '../../styles'
 import  coglioni  from '../../assets/coglioni.jpg'
+import { TouchableWithoutFeedback } from 'react-native-gesture-handler'
 
 const posts = [
   {id: 1, user: 'fabian', text: 'this is post number one'}, 
@@ -31,9 +32,15 @@ export const PostsList = () => {
 
 export const Post = (props) => {
   return (
-    <View style={postStyle.container}>
+    <TouchableWithoutFeedback onPress={() => props.navigation.navigate('Single Post',{
+      text: props.text,
+      author: props.author,
+      date: props.date,
+      profile_pic: props.profile_pic,
+    })}>
+      <View style={postStyle.container}>
       <View style={postStyle.info}>
-        <Image source={{uri:props.profile_pic}} style={styles.smallImage} />
+        <Image source={{uri:props.profile_pic}} style={styles.smallImage}/>
         <View>
           <Text style={postStyle.author}>{props.author}</Text>
           <Text style={postStyle.date}>{props.date}</Text>
@@ -45,6 +52,8 @@ export const Post = (props) => {
         </Text>
       </View>
     </View>
+    </TouchableWithoutFeedback>
+    
   )
 }
 
