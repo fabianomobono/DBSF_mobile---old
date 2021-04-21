@@ -58,7 +58,7 @@ export const Post = (props) => {
 }
 
 
-const postStyle = StyleSheet.create({
+export const postStyle = StyleSheet.create({
   container: {
     padding: 20,
     backgroundColor: '#fff',
@@ -71,7 +71,6 @@ const postStyle = StyleSheet.create({
     color: '#444',
     fontSize: 15,
     padding: 20,
-
   },
 
   info: {

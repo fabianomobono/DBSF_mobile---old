@@ -12,6 +12,7 @@ export const infoSlice = createSlice({
       "friends": [],
       "posts": [],
       "last": "",
+      "user": "",
     }
   }, 
   reducers: {
@@ -30,4 +31,6 @@ export const infoSlice = createSlice({
 
 export const { update_info, add_post } = infoSlice.actions
 export const selectInfo = state => state.info.info
+export const selectUsername = state => state.info.info.user
+export const selectProfile_pic = state => state.info.info.profile_pic
 export default infoSlice.reducer

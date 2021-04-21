@@ -126,29 +126,6 @@ export function HomeScreen({navigation}) {
     setText('')
   }
 
-  
-  const getData = async () => {
-
-    try {
-      const value = await AsyncStorage.getItem('@storage_Key')
-      if(value !== null) {
-        // value previously stored
-       alert(value)
-        
-      }
-      else {
-        alert('value is null')
-      }
-    } catch(e) {
-      // error reading value
-      alert('there was a problem checking the login status from the home screen')
-    }
-  }
-
-  const tFromS = () => {
-    alert(token)
-  }
-
   return (
     <View>
       <View style={homeStyle.container}>

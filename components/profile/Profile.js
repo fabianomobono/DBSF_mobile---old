@@ -7,7 +7,7 @@ import { Image } from 'react-native'
 import { selectToken } from '../status/statusSlice'
 import { Post } from '../posts/PostsList'
 
-export const Profile = () => {
+export const Profile = ({navigation}) => {
   const info = useSelector(selectInfo)
   const token = useSelector(selectToken)
   console.log(info.user)
@@ -41,6 +41,7 @@ export const Profile = () => {
       <View >
         {own_posts.length ? own_posts.map(t => 
           <Post
+            snavigation={navigation}
             key={t.id}
             text={t.text} 
             author={t.author } 
