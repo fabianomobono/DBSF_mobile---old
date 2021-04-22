@@ -41,7 +41,8 @@ export const Profile = ({navigation}) => {
       <View >
         {own_posts.length ? own_posts.map(t => 
           <Post
-            snavigation={navigation}
+            navigation={navigation}
+            id={t.id}
             key={t.id}
             text={t.text} 
             author={t.author } 

@@ -2,28 +2,62 @@ import React, { useState } from 'react'
 import { Text, View, TouchableOpacity, Image, StyleSheet } from 'react-native'
 import { postStyle } from './PostsList'
 import { styles } from '../../styles'
-import { TextInput } from 'react-native-gesture-handler'
-import { useSelector } from 'react-redux'
-import { selectInfo, selectUsername, selectProfile_pic } from '../info/infoSlice'
+import { ScrollView, TextInput } from 'react-native-gesture-handler'
+import { useSelector, useDispatch } from 'react-redux'
+import { selectInfo, selectUsername, selectProfile_pic, selectComments, comment_post } from '../info/infoSlice'
+import { selectToken } from '../status/statusSlice'
 
 export const SinglePostPage = ({ route, navigation }) => {
+
+    // parames from route
+    const {text, author, date, profile_pic ,id} = route.params
     // state components
     const [commentText, setCommentText] = useState('')
-    const [comments, setComments] = useState([])
-    const info = useSelector(selectInfo)
+    const comments = useSelector(selectComments(id))
+    
+    const dispatch = useDispatch()
+    // get the token from the redux store for sending requests
+    const token = useSelector(selectToken)
    
     const current_user = useSelector(selectUsername)
     const current_user_profile_pic = useSelector(selectProfile_pic)
     
     const new_comment = () => {
-        setComments([...comments,{text: commentText}])
+      //send the comment in a post request to the server
+      fetch('https://dbsf.herokuapp.com/api/comment', {
+        method: 'POST',
+        headers: {
+          Authorization: 'Token '.concat(token),
+          'Content-type': 'application/json'
+        },
+        body: JSON.stringify({
+          post_id: id,
+          text: commentText
+        })
+      })
+      .then(res => res.json())
+      .then(res => {   
+        dispatch(comment_post(
+          {
+            post_id: id,
+             comment: 
+             {
+              commentator: res.commentator, 
+              date: res.date, 
+              id: res.id, 
+              profile_pic: res.profile_pic, 
+              text: res.text
+             }
+          }))
+        // now you have to update the redux store
+      }).catch(console.log('noooooo something is going wrong....again'))
         setCommentText('')
-        console.log(current_user_profile_pic)
-        console.log('This was the info from SinglePostPage')
+       
     }
 
-    const {text, author, date, profile_pic} = route.params
+    
     return (
+      <ScrollView>
         <View style={postStyle.container}>
         <View style={postStyle.info}>
           <Image source={{uri:profile_pic}} style={styles.smallImage}/>
@@ -47,6 +81,9 @@ export const SinglePostPage = ({ route, navigation }) => {
           />
         </View>
       </View>
+
+      </ScrollView>
+        
     )
 }
 

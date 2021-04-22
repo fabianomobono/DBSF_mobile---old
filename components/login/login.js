@@ -45,9 +45,7 @@ export const LoginPage = ({navigation}) => {
     .then(data => {
       if(data.token){
         // store the token in local storage 
-        console.log(data.token)
-        console.log(typeof(data.token))
-        console.log('callign storeData')     
+   
         storeData(data.token)
         // update the redux store
         dispatch(login_token(data.token))
@@ -77,8 +75,7 @@ export const LoginPage = ({navigation}) => {
           )}
         />
       </View>
-    </KeyboardAvoidingView>
-    
+    </KeyboardAvoidingView>   
   )
 }
 
@@ -110,10 +107,8 @@ export function SignUpScreen({navigation}) {
     setMode(currentMode);
   };
 
-  const showDatepicker = () => {
-    
-    showMode('date');
-    
+  const showDatepicker = () => {    
+    showMode('date');    
   };
 
   

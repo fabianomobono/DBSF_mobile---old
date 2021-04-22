@@ -142,6 +142,7 @@ export function HomeScreen({navigation}) {
           posts.length  > 0 ? posts.map(t => 
             <Post
               navigation={navigation}
+              id={t.id}
               key={t.id} 
               text={t.text} 
               author={t.author } 
