@@ -6,14 +6,33 @@ import { styles } from '../../styles'
 import { Image } from 'react-native'
 import { selectToken } from '../status/statusSlice'
 import { Post } from '../posts/PostsList'
+import * as ImagePicker from 'expo-image-picker'
+import { Platform } from 'react-native'
+import { TouchableWithoutFeedback } from 'react-native'
 
 export const Profile = ({navigation}) => {
+
+  // variables from the redux store
   const info = useSelector(selectInfo)
   const token = useSelector(selectToken)
-  console.log(info.user)
-  const [own_posts, setOwn_posts] = useState([])
+  
 
+  //state variables
+  const [own_posts, setOwn_posts] = useState([])
+  const [newImage, setNewImage] = useState(null)
+
+  // when the component mounts
   useEffect( () => {
+    // ask for permission to grant access to the devices photo library
+    (async () => {
+      if (Platform.OS !== 'web') {
+        const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+        if (status !== 'granted') {
+          alert('Sorry, we need camera roll permissions to make this work!');
+        }
+      }
+    })();
+
     fetch('https://dbsf.herokuapp.com/api/one_persons_posts', {
       method: 'POST',
       headers: {
@@ -24,14 +43,43 @@ export const Profile = ({navigation}) => {
       body: JSON.stringify({friend: info.user}) 
     }).then(res => res.json()).then(r => setOwn_posts(r.posts.posts)).catch(r => console.log('something went wrong'))
     
+    // aske permission to access the camera
+    
   }, [])
+
+
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    console.log(result);
+
+    if (!result.cancelled) {
+      setNewImage(result.uri);
+    }
+  }
+
+
   return (
     <ScrollView>
       <View style={profileStyle.container}>
         <Text style={profileStyle.title}>
           This is goint to be the profile page !!
         </Text>
-        <Image source={{uri:info.profile_pic}}  style={profileStyle.profile_pic}/>
+        <TouchableWithoutFeedback onPress={pickImage}>
+          {
+            newImage ? 
+            <Image source={{uri:newImage}} style={profileStyle.profile_pic}/>
+            : 
+            <Image source={{uri:info.profile_pic}} style={profileStyle.profile_pic}/> 
+          }
+          
+        </TouchableWithoutFeedback>
+       
         <View>
           <Text style={profileStyle.text}>Name: {info.first} {info.last}</Text>
           <Text style={profileStyle.text}>Email: {info.email}</Text>
