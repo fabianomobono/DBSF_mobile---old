@@ -6,12 +6,13 @@ import { useDispatch, useSelector } from 'react-redux'
 import { selectToken } from '../status/statusSlice';
 import { Messages } from '../messages/Messages' 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { MaterialIcons, FontAwesome5 } from '@expo/vector-icons';
+import { MaterialIcons, FontAwesome5, FontAwesome } from '@expo/vector-icons';
 import { Profile } from '../profile/Profile';
 import { update_info, selectInfo, add_post } from '../info/infoSlice'
 import { logoutScreen } from '../login/login';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { FindPeople } from '../find/FindPeople';
 
 
 // this is the tab navigator that contains the feed, messages, profile
@@ -21,6 +22,7 @@ export const Main = () => {
       <Tab.Navigator initialRouteName='Feed'
       screenOptions={({ route }) => ({
         tabBarIcon: () => {
+
           if (route.name === 'Messages') {
            return <MaterialIcons name="message" size={24} color="white" />
           } 
@@ -32,17 +34,21 @@ export const Main = () => {
           else if(route.name === 'Profile'){
             return <MaterialIcons name="face" size={24} color="white" />
           }
+
           else if (route.name === 'Logout'){
             return <MaterialIcons name="logout" size={24} color="white" />
+          }
+
+          else if (route.name === 'Search') {
+            return <FontAwesome name="search" size={24} color="white" />
           }
         },
       })}
       tabBarOptions={{
         activeTintColor: 'white',
         inactiveTintColor: 'silver',
-        fontSize: 50,
-        style: {
-          fontSize: 100,
+        showLabel: false,
+        style: {    
           backgroundColor: '#1aa1f0',
           height: 80,
           fontSize: 50,
@@ -55,7 +61,8 @@ export const Main = () => {
         <Tab.Screen name='Feed' component={HomeScreen}/>
         <Tab.Screen name='Messages' component={Messages}/>
         <Tab.Screen name='Profile' component={Profile}/>
-        <Tab.Screen name={'Logout'} component={logoutScreen} />
+        <Tab.Screen name='Search' component={FindPeople} />
+        <Tab.Screen name='Logout' component={logoutScreen}/>        
       </Tab.Navigator>
   )
 }
@@ -77,35 +84,33 @@ export function HomeScreen({navigation}) {
   
   // when the component mounts request data from the server
   useEffect( () =>{
-    console.log('useEffect got called...and here is the token')
-    console.log(token)
+    // when the component mounts request data from the server
+    fetch('https://dbsf.herokuapp.com/api/get_info', 
+      {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json',
+            Authorization: "Token ".concat(token)
+        },
+        credentials: 'same-origin',  
+      }).then(res => res.json()).then(r => {
+        
+        
+        setProfile_pic(r.hello.profile_pic)
+        setUser(r.hello.user)
+        console.log('useEffect in HomeScreen Component has been called...this gets triggered when the get info fetch comes back')
+        
 
-     fetch('https://dbsf.herokuapp.com/api/get_info', 
-        {
-          method: "POST",
-          headers: {
-            'Content-Type': 'application/json',
-             Authorization: "Token ".concat(token)
-          },
-          credentials: 'same-origin',  
-        }).then(res => res.json()).then(r => {
-          
-          
-          setProfile_pic(r.hello.profile_pic)
-          setUser(r.hello.user)
-          console.log('useEffect in HomeScreen Component has been called...this gets triggered when the get info fetch comes back')
-          
-
-          // add the information to the redux store
-          dispatch(update_info(r.hello))
-          
-        })
-      .catch(r => alert('something went wronghnjmkmk'));
+        // add the information to the redux store
+        dispatch(update_info(r.hello))
+        
+      })
+    .catch(r => alert('something went wronghnjmkmk'));
   },[])
   
   // add a new post to the feed
-   const new_post = () => {  
-    const time = new Date()
+  const new_post = () => {  
+    
     // send the post to the server so it can be saved in the database
     fetch('https://dbsf.herokuapp.com/api/new_post', {
       method: 'POST',

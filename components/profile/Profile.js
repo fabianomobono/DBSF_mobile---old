@@ -67,9 +67,6 @@ export const Profile = ({navigation}) => {
   return (
     <ScrollView>
       <View style={profileStyle.container}>
-        <Text style={profileStyle.title}>
-          This is goint to be the profile page !!
-        </Text>
         <TouchableWithoutFeedback onPress={pickImage}>
           {
             newImage ? 
