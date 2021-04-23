@@ -45,7 +45,7 @@ export const Messages = () => {
 }
 
 
-const messageStyles = StyleSheet.create({
+export const messageStyles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',

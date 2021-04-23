@@ -7,6 +7,7 @@ import { LoginPage, SignUpScreen } from '../login/login'
 import { Main } from '../home/HomeScreen'
 import { login_token, selectToken } from '../status/statusSlice'
 import { SinglePostPage } from '../posts/SinglePostPage';
+import { FriendsProfile } from '../profile/FriendsProfile';
  
 const Stack = createStackNavigator()
 
@@ -45,7 +46,8 @@ export function Whole() {
       <NavigationContainer>
           <Stack.Navigator initialRouteName='Home'>  
             <Stack.Screen name='Home' component={Main} />
-            <Stack.Screen name='Single Post' component={SinglePostPage} />
+            <Stack.Screen name='Single Post' component={SinglePostPage}/>
+            <Stack.Screen name='Friends Profile' component={FriendsProfile}/>
           </Stack.Navigator>
         </NavigationContainer>
     )

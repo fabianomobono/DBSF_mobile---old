@@ -106,7 +106,7 @@ export const Profile = ({navigation}) => {
   )
 }
 
-const profileStyle = StyleSheet.create({
+export const profileStyle = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
