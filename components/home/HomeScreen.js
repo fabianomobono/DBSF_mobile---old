@@ -112,7 +112,8 @@ export function HomeScreen({navigation}) {
   const new_post = () => {  
     
     // send the post to the server so it can be saved in the database
-    fetch('https://dbsf.herokuapp.com/api/new_post', {
+    if (text.length > 1) {
+      fetch('https://dbsf.herokuapp.com/api/new_post', {
       method: 'POST',
       headers: {
         'Authorization': 'Token '.concat(token),
@@ -129,6 +130,10 @@ export function HomeScreen({navigation}) {
     })
     .catch(r => console.log('this does not work'))
     setText('')
+    }
+    else {
+      alert('post text needs to be longer')
+    }
   }
 
   return (
@@ -165,7 +170,7 @@ export function HomeScreen({navigation}) {
 
 const homeStyle = StyleSheet.create({
   container: {
-    backgroundColor: '#ddd',
+    backgroundColor: '#fff',
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center'

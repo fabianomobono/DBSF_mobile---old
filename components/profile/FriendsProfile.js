@@ -1,23 +1,70 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { ScrollView } from 'react-native-gesture-handler'
 import { View, Text, Image, StyleSheet, Button} from 'react-native'
-import { PresignedPost } from 'aws-sdk/clients/s3'
 import { TouchableOpacity } from 'react-native'
 import { styles } from '../../styles'
+import { useSelector } from 'react-redux'
+import { selectToken } from '../status/statusSlice'
+import { Post } from '../posts/PostsList'
+import { profileStyle } from './Profile'
 
-export const FriendsProfile = ({route}) => {
+export const FriendsProfile = ({route, navigation}) => {
+    
+    //set variables from navigation params
     const { first, last, user, profile_pic } = route.params
+    const token = useSelector(selectToken)
+    
+    // set local state variables
+    const [posts, setPosts] = useState([])
+    
+    useEffect(() => {
+         // get this users posts from the server
+    fetch('https://dbsf.herokuapp.com/api/one_persons_posts', {
+        method: 'POST',
+        headers: {
+            'Content-type': 'application/json',
+            'Authorization': 'Token '.concat(token)
+        },
+        body: JSON.stringify({friend: user})
+    })
+    .then(res => res.json())
+    .then(res =>{
+        console.log(res)
+        setPosts(res.posts.posts)
+    })
+    .catch(res => console.log(res))
+    },[])
     return (
         <ScrollView>  
-            <View style={FriendsProfileStyles.container}>
-                <Image source={{uri: profile_pic}} style={FriendsProfileStyles.profile_pic}/>
+            <View style={profileStyle.container}>
+                <Image source={{uri: profile_pic}} style={profileStyle.profile_pic}/>
                 <TouchableOpacity style={styles.button}>
                     <Text  style={{fontSize: 20 , color: 'white', fontWeight: 'bold'}}>Request Friendship</Text>
                 </TouchableOpacity>
-                <Text style={FriendsProfileStyles.text}>Name: {first} {last}</Text>
-                <Text style={FriendsProfileStyles.text}>Username: {user}</Text>     
+                <Text style={profileStyle.text}>Name: {first} {last}</Text>
+                <Text style={profileStyle.text}>Username: {user}</Text>               
             </View>
-   
+            <View>
+                
+                {
+                // if the user has written posts display the posts, else display empty posts list message
+                posts.length ? posts.map(t =>                
+                    <Post
+                        navigation={navigation}
+                        id={t.id}
+                        key={t.id}
+                        text={t.text} 
+                        author={t.author } 
+                        profile_pic={t.author_picture}
+                        date={t.date} 
+                    />
+                    )
+                    :
+                    <View style={profileStyle.container}>
+                        <Text style={styles.empty_list_message}>{user} has not written any posts yet...check back later</Text>
+                    </View>
+                }
+            </View>     
         </ScrollView>
     )
 }
@@ -26,7 +73,7 @@ const FriendsProfileStyles = StyleSheet.create({
     container: {
         alignItems: 'center',
         padding: 20,
-
+        flex: 1,
     },
     profile_pic: {
         width: 200, 
@@ -38,6 +85,6 @@ const FriendsProfileStyles = StyleSheet.create({
         fontWeight: 'bold',
         color: 'grey',
         marginTop: 30,
-    }
+    },
 
 })

@@ -6,6 +6,9 @@ import { ScrollView, TextInput } from 'react-native-gesture-handler'
 import { useSelector, useDispatch } from 'react-redux'
 import { selectInfo, selectUsername, selectProfile_pic, selectComments, comment_post } from '../info/infoSlice'
 import { selectToken } from '../status/statusSlice'
+import { KeyboardAvoidingView } from 'react-native'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+
 
 export const SinglePostPage = ({ route, navigation }) => {
 
@@ -56,34 +59,40 @@ export const SinglePostPage = ({ route, navigation }) => {
     }
 
     
-    return (
-      <ScrollView>
-        <View style={postStyle.container}>
-        <View style={postStyle.info}>
-          <Image source={{uri:profile_pic}} style={styles.smallImage}/>
-          <View>
-            <Text style={postStyle.author}>{author}</Text>
-            <Text style={postStyle.date}>{date}</Text>
-          </View>
-        </View>
-        <View style={postStyle.postBody}>
-          <Text style={postStyle.text}>
-            {text}
-          </Text>
-          <View style={SinglePostStyle.commentContainer}>
-            {comments.map(c => <Comment text={c.text} current_user={current_user} current_user_profile_pic={current_user_profile_pic}/>)}
-          </View>
-          <TextInput 
-            style={SinglePostStyle.commentTextInput} 
-            placeholder='Comment...'value={commentText} 
-            onChangeText={comment => setCommentText(comment)}
-            onSubmitEditing={new_comment}
-          />
-        </View>
-      </View>
-
-      </ScrollView>
+    return (      
+      
         
+          <KeyboardAwareScrollView>
+            <View style={SinglePostStyle.container}>
+              <View style={postStyle.info}>
+                <Image source={{uri:profile_pic}} style={styles.smallImage}/>
+                <View>
+                  <Text style={postStyle.author}>{author}</Text>
+                  <Text style={postStyle.date}>{date}</Text>
+                </View>
+              </View>
+              <View style={postStyle.postBody}>
+                <Text style={postStyle.text}>
+                  {text}
+                </Text>
+                <View style={SinglePostStyle.commentContainer}>
+                  {comments.map(c => <Comment text={c.text} current_user={current_user} current_user_profile_pic={current_user_profile_pic}/>)}
+                </View>
+                <TextInput 
+                  style={SinglePostStyle.commentTextInput} 
+                  placeholder='Comment...'value={commentText} 
+                  onChangeText={comment => setCommentText(comment)}
+                  onSubmitEditing={new_comment}
+                />
+              </View>
+            </View>
+            <View>
+              <Text>dfgojg</Text>
+              <Text>dfgojg</Text>
+              <Text>dfgojg</Text>
+              <Text>dfgojg</Text>
+            </View>
+          </KeyboardAwareScrollView>
     )
 }
 
@@ -100,12 +109,22 @@ const Comment = (props) => {
 }
 
 const SinglePostStyle = StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: 'white',
+      borderColor: '#ddd',
+      borderWidth: 1,
+         
+    },
     commentTextInput: {
         backgroundColor: '#eee',
         padding: 20,
         fontSize: 15,
         borderRadius: 20,
-        color: '#444'
+        color: '#444',
+        marginTop: 5,
+        margin: 10,
+        
     },
     commentContainer: {
         borderColor: '#999',

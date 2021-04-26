@@ -32,7 +32,7 @@ export const PostsList = () => {
 
 export const Post = (props) => {
   return (
-    <TouchableWithoutFeedback onPress={() => props.navigation.navigate('Single Post',{
+    <TouchableWithoutFeedback onPress={() => props.navigation.navigate('Single Post', {
       text: props.text,
       author: props.author,
       date: props.date,
@@ -64,8 +64,8 @@ export const postStyle = StyleSheet.create({
     padding: 20,
     backgroundColor: '#fff',
     borderColor: 'silver',
-    borderWidth: 3,
-    marginTop: 5,
+    borderWidth: 1,
+    paddingBottom: 40,
   },
 
   text: {
@@ -92,6 +92,7 @@ export const postStyle = StyleSheet.create({
     color: 'grey'
   },
 
-  postBody: {  
+  postBody: { 
+
   }
 })
