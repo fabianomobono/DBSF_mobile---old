@@ -27,6 +27,8 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "description": "This is the mobile version of Don't be a shi##y friend. \nIt's a small social network that reminds you to interact with your friends from time to time.\nThe web version is at https://dbsf.herokuapp.com",
+    "githubUrl": "https://github.com/fabianomobono/DBSF_mobile"
   }
 }

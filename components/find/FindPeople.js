@@ -14,14 +14,21 @@ export const FindPeople = ({navigation}) => {
     const [searchTerm, setSearchTerm] = useState('')
     const [users, setUsers] = useState([])
     const [requestSent, setRequestSent] = useState(false)
-    console.log(requestSent)
+    
     
     // get the Authorization token from the redux store
     const token = useSelector(selectToken)
 
+    //update UI
+    const updateUI = (text) => {
+        setRequestSent(false)
+        setUsers([])
+        setSearchTerm(text)
+    }
+
     // search for people using the search term
     const search = () => {
-        
+        setUsers([])
         fetch('https://dbsf.herokuapp.com/api/findFriends', {
             method: 'POST',
             headers: {
@@ -42,7 +49,7 @@ export const FindPeople = ({navigation}) => {
     return (
         <ScrollView style={findPeople.container}>
             <View style={findPeople.subContainer}>
-                <TextInput placeholder='Search for other users' autoCapitalize='none' style={styles.textInput} onChangeText={text => setSearchTerm(text)} onSubmitEditing={search}/>
+                <TextInput placeholder='Search for other users' autoCapitalize='none' style={styles.textInput} onChangeText={text => updateUI(text)} onSubmitEditing={search}/>
             </View>
             <View>
                 {
@@ -52,9 +59,9 @@ export const FindPeople = ({navigation}) => {
                 users.length > 0 ? 
                     users.map(user => <UserFriend first={user.first} last={user.last} profile_pic={user.profile_pic} user={user.user} navigation={navigation}/>)
                 :
-                    <Text style={styles.empty_list_message}>{requestSent ? 'No users that contain  in their username': 'Search for people' }</Text>
+                    <Text style={findPeople.empty_list_message}>{requestSent ? 'No users that contain  in their username': 'Search for people' }</Text>
                 :
-                    <Text style={styles.empty_list_message}>Search for people</Text>
+                    <Text style={findPeople.empty_list_message}>Search for people</Text>
                 }
             </View>
         </ScrollView>
@@ -107,7 +114,11 @@ const findPeople = StyleSheet.create({
     info: {
         color: 'silver',
 
-    }    
+    } ,
+    empty_list_message: {
+        textAlign: 'center',
+        color: 'grey',
+        fontSize: 20,
+        padding: 50,
+    }   
 })
-
-

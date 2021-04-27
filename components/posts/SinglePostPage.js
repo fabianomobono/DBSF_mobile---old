@@ -26,7 +26,8 @@ export const SinglePostPage = ({ route, navigation }) => {
     const current_user_profile_pic = useSelector(selectProfile_pic)
     
     const new_comment = () => {
-      //send the comment in a post request to the server
+      if (commentText.length > 0 && commentText[0] !== ' '){
+         //send the comment in a post request to the server
       fetch('https://dbsf.herokuapp.com/api/comment', {
         method: 'POST',
         headers: {
@@ -55,13 +56,15 @@ export const SinglePostPage = ({ route, navigation }) => {
         // now you have to update the redux store
       }).catch(console.log('noooooo something is going wrong....again'))
         setCommentText('')
+      }
+      else {
+        alert('Comments can not be empty...or start with a space')
+      }
+     
        
     }
-
-    
+  
     return (      
-      
-        
           <KeyboardAwareScrollView>
             <View style={SinglePostStyle.container}>
               <View style={postStyle.info}>
@@ -85,12 +88,6 @@ export const SinglePostPage = ({ route, navigation }) => {
                   onSubmitEditing={new_comment}
                 />
               </View>
-            </View>
-            <View>
-              <Text>dfgojg</Text>
-              <Text>dfgojg</Text>
-              <Text>dfgojg</Text>
-              <Text>dfgojg</Text>
             </View>
           </KeyboardAwareScrollView>
     )

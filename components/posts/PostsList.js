@@ -5,18 +5,6 @@ import { styles } from '../../styles'
 import  coglioni  from '../../assets/coglioni.jpg'
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler'
 
-const posts = [
-  {id: 1, user: 'fabian', text: 'this is post number one'}, 
-  {id: 2, user: 'linda', text: 'This is post number 2'}, 
-  {id: 3, user: 'babbo', text: 'oggi si mangia pasta alle vongole'},
-  {id: 4, user: 'mamma', text: 'alles gutes Liebes'},
-  {id: 5, user: 'mattia', text: 'mi sono innamorato'},
-  {id: 6, user: 'elisa', text: 'non ho tempo'},
-  {id: 7, user: 'mirko', text: 'viva il BJJ'},
-  {id: 7, user: 'mirko', text: 'viva il BJJ'},
-  {id: 7, user: 'mirko', text: 'viva il BJJ'},
-  {id: 7, user: 'mirko', text: 'viva il BJJ'}
-]
 
 export const PostsList = () => {
   return (
