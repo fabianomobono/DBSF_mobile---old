@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react' 
 import { View, Text, StyleSheet, ScrollView } from 'react-native'
-import { useSelector } from 'react-redux'
-import { selectInfo } from '../info/infoSlice'
+import { useDispatch, useSelector } from 'react-redux'
+import { selectInfo, update_profile_pic } from '../info/infoSlice'
 import { styles } from '../../styles'
 import { Image } from 'react-native'
 import { selectToken } from '../status/statusSlice'
@@ -9,13 +9,17 @@ import { Post } from '../posts/PostsList'
 import * as ImagePicker from 'expo-image-picker'
 import { Platform } from 'react-native'
 import { TouchableWithoutFeedback } from 'react-native'
+import { TouchableOpacity } from 'react-native-gesture-handler'
+import { FontAwesome5, FontAwesome } from '@expo/vector-icons'
+
+
 
 export const Profile = ({navigation}) => {
 
   // variables from the redux store
   const info = useSelector(selectInfo)
   const token = useSelector(selectToken)
-  
+  const dispatch = useDispatch()
 
   //state variables
   const [own_posts, setOwn_posts] = useState([])
@@ -26,9 +30,15 @@ export const Profile = ({navigation}) => {
     // ask for permission to grant access to the devices photo library
     (async () => {
       if (Platform.OS !== 'web') {
-        const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+        var { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
         if (status !== 'granted') {
           alert('Sorry, we need camera roll permissions to make this work!');
+        }
+        
+        // ask for camera permission
+        var { status } = await ImagePicker.requestCameraPermissionsAsync();
+        if ( status !== 'granted') {
+          alert(('Sorry, we need camera permissions to make this work!'))
         }
       }
     })();
@@ -47,7 +57,7 @@ export const Profile = ({navigation}) => {
     
   }, [])
 
-
+  // function that opens the camera roll
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -59,7 +69,63 @@ export const Profile = ({navigation}) => {
     console.log(result);
 
     if (!result.cancelled) {
-      setNewImage(result.uri);
+      setNewImage(result);
+    }
+  }
+
+  // function that opens the camera
+  const takePicture = async () => {
+    let result = await ImagePicker.launchCameraAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+    })
+    console.log(result)
+    if (!result.cancelled) {
+      setNewImage(result)
+    }
+  }
+
+  // helper function to prepare the data for the server
+  const createFormData = (photo) => {
+    const data = new FormData();
+  
+    data.append("profile_pic", {
+      name: info.user.concat('_profile_pic'),
+      type: photo.type,
+      uri:  Platform.OS === "android" ? photo.uri : photo.uri.replace("file://", "")
+       
+    });
+
+    return data;
+  };
+  
+
+  const saveNewProfilePic = () => {
+    // check again if the image exists in the local state
+    if (newImage) {
+      //prepare the image to be send via fetch
+      const formdata = createFormData(newImage)
+      console.log(formdata)
+      // make a post request to save the new image
+      fetch('https://dbsf.herokuapp.com/api/update_profile_pic', {
+        method: 'POST',
+        headers: {
+          Authorization: 'Token '.concat(token),
+        },
+        
+        body: formdata
+      })
+      .then(
+        res => res.json()
+      )
+      .then(res => {
+        console.log(res)
+        dispatch(update_profile_pic(res.response))
+      })
+      .catch(res => console.log('this is not working yet'))
+    }
+    else {
+      alert(" we couldn't save the image")
     }
   }
 
@@ -67,16 +133,29 @@ export const Profile = ({navigation}) => {
   return (
     <ScrollView>
       <View style={profileStyle.container}>
-        <TouchableWithoutFeedback onPress={pickImage}>
+        <TouchableWithoutFeedback >
           {
             newImage ? 
-            <Image source={{uri:newImage}} style={profileStyle.profile_pic}/>
+            <Image source={{uri:newImage.uri}} style={profileStyle.profile_pic}/>
             : 
             <Image source={{uri:info.profile_pic}} style={profileStyle.profile_pic}/> 
           }
           
         </TouchableWithoutFeedback>
-       
+        {
+          newImage &&
+          <TouchableOpacity style={profileStyle.saveNewProfilePictureButton} onPress={saveNewProfilePic}>
+            <Text style={styles.buttonText}>Save new Profile Pic</Text>
+          </TouchableOpacity>
+        }
+        <View style={profileStyle.updateProfilePicView}>
+          <TouchableOpacity style={profileStyle.updateProfilePicButton} onPress={takePicture}>
+            <FontAwesome5 name="camera" size={30} color="grey" />
+          </TouchableOpacity>
+          <TouchableOpacity style={profileStyle.updateProfilePicButton} onPress={pickImage}>
+            <FontAwesome name="photo" size={30} color="grey" />
+          </TouchableOpacity>
+        </View>       
         <View>
           <Text style={profileStyle.text}>Name: {info.first} {info.last}</Text>
           <Text style={profileStyle.text}>Email: {info.email}</Text>
@@ -131,5 +210,19 @@ export const profileStyle = StyleSheet.create({
     fontSize: 15,
     padding: 10,
     fontWeight: 'bold'
-  }
+  },
+  updateProfilePicView: {
+    flexDirection: 'row',
+    padding: 20,
+  },
+  updateProfilePicButton: {
+    padding: 20,
+    paddingTop: 0
+  },
+  saveNewProfilePictureButton: {
+    backgroundColor: 'steelblue',
+    padding: 20,
+    borderRadius: 50,
+  },
+  
 })

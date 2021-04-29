@@ -80,5 +80,10 @@ export const styles = StyleSheet.create({
       fontSize: 20,
       padding: 10,
       color: 'grey'
+    },
+    buttonText: {
+      color: 'white',
+      fontSize: 15,
+      fontWeight: 'bold'
     }
   });

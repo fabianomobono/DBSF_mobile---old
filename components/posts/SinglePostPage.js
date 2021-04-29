@@ -83,7 +83,7 @@ export const SinglePostPage = ({ route, navigation }) => {
                 </View>
                 <TextInput 
                   style={SinglePostStyle.commentTextInput} 
-                  placeholder='Comment...'value={commentText} 
+                  placeholder='Comment...' value={commentText} 
                   onChangeText={comment => setCommentText(comment)}
                   onSubmitEditing={new_comment}
                 />

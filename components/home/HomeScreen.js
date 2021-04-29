@@ -8,7 +8,7 @@ import { Messages } from '../messages/Messages'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { MaterialIcons, FontAwesome5, FontAwesome } from '@expo/vector-icons';
 import { Profile } from '../profile/Profile';
-import { update_info, selectInfo, add_post } from '../info/infoSlice'
+import { update_info, selectInfo, add_post, selectProfile_pic, selectPosts } from '../info/infoSlice'
 import { logoutScreen } from '../login/login';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -71,10 +71,10 @@ export const Main = () => {
 export function HomeScreen({navigation}) {
 
   // get posts from the redux-store
-  const posts = useSelector(selectInfo).posts
+  const posts = useSelector(selectPosts)
   // define current text in the textInput and the list of posts
   const [text, setText] = useState('')
-  const [profile_pic, setProfile_pic] = useState('')
+  const profile_pic = useSelector(selectProfile_pic)
   const [user, setUser] = useState('')
   // redux stuff
   // set up dispatch call
@@ -83,7 +83,8 @@ export function HomeScreen({navigation}) {
   const token = useSelector(selectToken)
   
   // when the component mounts request data from the server
-  useEffect( () =>{
+  useEffect( () => {
+    
     // when the component mounts request data from the server
     fetch('https://dbsf.herokuapp.com/api/get_info', 
       {
@@ -96,7 +97,7 @@ export function HomeScreen({navigation}) {
       }).then(res => res.json()).then(r => {
         
         
-        setProfile_pic(r.hello.profile_pic)
+        
         setUser(r.hello.user)
         console.log('useEffect in HomeScreen Component has been called...this gets triggered when the get info fetch comes back')
         

@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 
+
 export const infoSlice = createSlice({
   name: 'info',
   initialState: {
@@ -13,6 +14,7 @@ export const infoSlice = createSlice({
       "posts": [],
       "last": "",
       "user": "",
+     
     }
   }, 
   reducers: {
@@ -27,14 +29,20 @@ export const infoSlice = createSlice({
     },
     comment_post: (state, action) => {      
       state.info.posts.find(post => post.id === action.payload.post_id).comments.push(action.payload.comment)  
+    },
+    update_profile_pic: (state, action) => {
+      // change all the profile pic in the posts
+      state.info.posts.map(post => {if(post.author === state.info.user){post.author_picture = action.payload}})
+      state.info.profile_pic = action.payload
     }
   }
 })
 
 
-export const { update_info, add_post, comment_post } = infoSlice.actions
+export const { update_info, add_post, comment_post, update_profile_pic } = infoSlice.actions
 export const selectInfo = state => state.info.info
 export const selectUsername = state => state.info.info.user
 export const selectProfile_pic = state => state.info.info.profile_pic
 export const selectComments = id => state => state.info.info.posts.find(post => post.id === id ).comments
+export const selectPosts = state => state.info.info.posts
 export default infoSlice.reducer
