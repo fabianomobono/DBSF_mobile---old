@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Text, View, TouchableOpacity, Image, StyleSheet } from 'react-native'
 import { postStyle } from './PostsList'
 import { styles } from '../../styles'
@@ -10,13 +10,13 @@ import { KeyboardAvoidingView } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 
-export const SinglePostPage = ({ route, navigation }) => {
+  export const SinglePostPage = ({ route }) => {
 
     // parames from route
-    const {text, author, date, profile_pic ,id} = route.params
+    const {text, author, date, profile_pic, id} = route.params
     // state components
     const [commentText, setCommentText] = useState('')
-    const comments = useSelector(selectComments(id))
+    const [comments, setComments] = useState([])
     
     const dispatch = useDispatch()
     // get the token from the redux store for sending requests
@@ -24,6 +24,23 @@ export const SinglePostPage = ({ route, navigation }) => {
    
     const current_user = useSelector(selectUsername)
     const current_user_profile_pic = useSelector(selectProfile_pic)
+
+    useEffect(() => {
+      fetch('https://dbsf.herokuapp.com/api/get_comments_for_post', {
+        method: "POST",
+        headers: {
+          Authorization: 'Token '.concat(token)
+        },
+        body: JSON.stringify({post_id: id})
+        
+      })
+      .then(res => res.json())
+      .then(res => setComments(res))
+      .catch(res => {
+        console.log('Something went wrong')
+        console.log(res)
+      })
+    },[])
     
     const new_comment = () => {
       if (commentText.length > 0 && commentText[0] !== ' '){
@@ -41,27 +58,21 @@ export const SinglePostPage = ({ route, navigation }) => {
       })
       .then(res => res.json())
       .then(res => {   
-        dispatch(comment_post(
-          {
-            post_id: id,
-             comment: 
-             {
-              commentator: res.commentator, 
-              date: res.date, 
-              id: res.id, 
-              profile_pic: res.profile_pic, 
-              text: res.text
-             }
-          }))
+       setComments([...comments, {
+        commentator: res.commentator, 
+        date: res.date, 
+        id: res.id, 
+        profile_pic: res.profile_pic, 
+        text: res.text,
+       }])
+
         // now you have to update the redux store
       }).catch(console.log('noooooo something is going wrong....again'))
         setCommentText('')
       }
       else {
         alert('Comments can not be empty...or start with a space')
-      }
-     
-       
+      } 
     }
   
     return (      
@@ -79,7 +90,7 @@ export const SinglePostPage = ({ route, navigation }) => {
                   {text}
                 </Text>
                 <View style={SinglePostStyle.commentContainer}>
-                  {comments.map(c => <Comment text={c.text} current_user={current_user} current_user_profile_pic={current_user_profile_pic}/>)}
+                  {comments.map(c => <Comment key={c.id} text={c.text} commentator={c.commentator} commentator_profile_pic={c.profile_pic}/>)}
                 </View>
                 <TextInput 
                   style={SinglePostStyle.commentTextInput} 
@@ -97,8 +108,8 @@ const Comment = (props) => {
     return (
         <View style={SinglePostStyle.comment}>
           <View style={SinglePostStyle.commentInfo}>
-            <Image source={{uri: props.current_user_profile_pic}} style={SinglePostStyle.commentPic}/>
-            <Text style={SinglePostStyle.commentAuthor}>{props.current_user}</Text>
+            <Image source={{uri: props.commentator_profile_pic}} style={SinglePostStyle.commentPic}/>
+            <Text style={SinglePostStyle.commentAuthor}>{props.commentator}</Text>
           </View>
           <Text style={SinglePostStyle.commentText}>{props.text}</Text>
         </View>

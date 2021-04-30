@@ -25,7 +25,8 @@ export const Post = (props) => {
       author: props.author,
       date: props.date,
       profile_pic: props.profile_pic,
-      id: props.id
+      id: props.id,
+      comments: props.comments
     })}>
       <View style={postStyle.container}>
       <View style={postStyle.info}>

@@ -19,7 +19,7 @@ export const FriendsProfile = ({route, navigation}) => {
     
     useEffect(() => {
          // get this users posts from the server
-    fetch('https://dbsf.herokuapp.com/api/one_persons_posts', {
+        fetch('https://dbsf.herokuapp.com/api/one_persons_posts', {
         method: 'POST',
         headers: {
             'Content-type': 'application/json',
@@ -54,9 +54,10 @@ export const FriendsProfile = ({route, navigation}) => {
                         id={t.id}
                         key={t.id}
                         text={t.text} 
-                        author={t.author } 
+                        author={t.author} 
                         profile_pic={t.author_picture}
-                        date={t.date} 
+                        date={t.date}
+                        comments={t.comments}
                     />
                     )
                     :
