@@ -11,7 +11,7 @@ import { Platform } from 'react-native'
 import { TouchableWithoutFeedback } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { FontAwesome5, FontAwesome } from '@expo/vector-icons'
-
+import { AntDesign } from '@expo/vector-icons';
 
 
 export const Profile = ({navigation}) => {
@@ -24,6 +24,8 @@ export const Profile = ({navigation}) => {
   //state variables
   const [own_posts, setOwn_posts] = useState([])
   const [newImage, setNewImage] = useState(null)
+  const [saveButton, setSaveButton] = useState(false)
+  const [fullPic, setFullPic] = useState(false)
 
   // when the component mounts
   useEffect( () => {
@@ -70,6 +72,7 @@ export const Profile = ({navigation}) => {
 
     if (!result.cancelled) {
       setNewImage(result);
+      setSaveButton(true)
     }
   }
 
@@ -121,6 +124,7 @@ export const Profile = ({navigation}) => {
       .then(res => {
         console.log(res)
         dispatch(update_profile_pic(res.response))
+        setSaveButton(false)
       })
       .catch(res => console.log('this is not working yet'))
     }
@@ -129,60 +133,81 @@ export const Profile = ({navigation}) => {
     }
   }
 
+  const showFullPic = () => {
+    setFullPic(true)
+  }
 
-  return (
-    <ScrollView>
-      <View style={profileStyle.container}>
-        <TouchableWithoutFeedback >
-          {
-            newImage ? 
-            <Image source={{uri:newImage.uri}} style={profileStyle.profile_pic}/>
-            : 
-            <Image source={{uri:info.profile_pic}} style={profileStyle.profile_pic}/> 
-          }
-          
-        </TouchableWithoutFeedback>
-        {
-          newImage &&
-          <TouchableOpacity style={profileStyle.saveNewProfilePictureButton} onPress={saveNewProfilePic}>
-            <Text style={styles.buttonText}>Save new Profile Pic</Text>
+
+  if(fullPic) {
+    return (
+      <View>
+        <View style={{direction: 'rtl', flexDirection: 'row', backgroundColor: 'black'}}>
+          <TouchableOpacity onPress={() => setFullPic(false)}>
+            <AntDesign name="close" size={30} color="white" style={styles.close} />
           </TouchableOpacity>
-        }
-        <View style={profileStyle.updateProfilePicView}>
-          <TouchableOpacity style={profileStyle.updateProfilePicButton} onPress={takePicture}>
-            <FontAwesome5 name="camera" size={30} color="grey" />
-          </TouchableOpacity>
-          <TouchableOpacity style={profileStyle.updateProfilePicButton} onPress={pickImage}>
-            <FontAwesome name="photo" size={30} color="grey" />
-          </TouchableOpacity>
-        </View>       
-        <View>
-          <Text style={profileStyle.text}>Name: {info.first} {info.last}</Text>
-          <Text style={profileStyle.text}>Email: {info.email}</Text>
-          <Text style={profileStyle.text}>Date of Birth: {info.dob}</Text>
+        </View>
+        <View style={profileStyle.fullImageBackground}>       
+          <Image source={{uri:info.profile_pic}} style={profileStyle.fullImage} />
         </View>
       </View>
-      <View >
-        {own_posts.length ? own_posts.map(t => 
-          <Post
-            navigation={navigation}
-            id={t.id}
-            key={t.id}
-            text={t.text} 
-            author={t.author } 
-            profile_pic={t.author_picture}
-            date={t.date} 
-          />
-          )
-          :
-          <View style={profileStyle.container}>
-            <Text style={styles.empty_list_message}>{info.user} has not written any posts yet...check back later</Text>
+      
+    )   
+  }
+  else {
+    return (   
+      <ScrollView>
+        <View style={profileStyle.container}>
+          <TouchableWithoutFeedback onPress={showFullPic}>
+            {
+              newImage ? 
+              <Image source={{uri:newImage.uri}} style={profileStyle.profile_pic}/>
+              : 
+              <Image source={{uri:info.profile_pic}} style={profileStyle.profile_pic}/> 
+            }
+            
+          </TouchableWithoutFeedback>
+          {
+            saveButton &&
+            <TouchableOpacity style={profileStyle.saveNewProfilePictureButton} onPress={saveNewProfilePic}>
+              <Text style={styles.buttonText}>Save new Profile Pic</Text>
+            </TouchableOpacity>
+          }
+          <View style={profileStyle.updateProfilePicView}>
+            <TouchableOpacity style={profileStyle.updateProfilePicButton} onPress={takePicture}>
+              <FontAwesome5 name="camera" size={30} color="grey" />
+            </TouchableOpacity>
+            <TouchableOpacity style={profileStyle.updateProfilePicButton} onPress={pickImage}>
+              <FontAwesome name="photo" size={30} color="grey" />
+            </TouchableOpacity>
+          </View>       
+          <View>
+            <Text style={profileStyle.text}>Name: {info.first} {info.last}</Text>
+            <Text style={profileStyle.text}>Email: {info.email}</Text>
+            <Text style={profileStyle.text}>Date of Birth: {info.dob}</Text>
           </View>
-        }
-      </View>
-    </ScrollView>
-    
-  )
+        </View>
+        <View >
+          {own_posts.length ? own_posts.map(t => 
+            <Post
+              navigation={navigation}
+              id={t.id}
+              key={t.id}
+              text={t.text} 
+              author={t.author} 
+              profile_pic={info.profile_pic}
+              date={t.date} 
+            />
+            )
+            :
+            <View style={profileStyle.container}>
+              <Text style={styles.empty_list_message}>{info.user} has not written any posts yet...check back later</Text>
+            </View>
+          }
+        </View>
+      </ScrollView>   
+    )
+  }
+  
 }
 
 export const profileStyle = StyleSheet.create({
@@ -224,5 +249,16 @@ export const profileStyle = StyleSheet.create({
     padding: 20,
     borderRadius: 50,
   },
-  
+  fullImageBackground: {
+    backgroundColor: 'black',
+    height: 600,
+    justifyContent: 'center',
+    alignItems: 'center',
+    
+  },
+  fullImage: {
+    marginTop: -100,
+    width: 300,
+    height: 300,
+  }
 })

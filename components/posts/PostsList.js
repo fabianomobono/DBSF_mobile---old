@@ -2,7 +2,6 @@ import { useLinkProps } from '@react-navigation/native'
 import React from 'react'
 import { FlatList, Text, View, StyleSheet, Image } from 'react-native'
 import { styles } from '../../styles'
-import  coglioni  from '../../assets/coglioni.jpg'
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler'
 
 
@@ -43,7 +42,6 @@ export const Post = (props) => {
       </View>
     </View>
     </TouchableWithoutFeedback>
-    
   )
 }
 
@@ -55,6 +53,8 @@ export const postStyle = StyleSheet.create({
     borderColor: 'silver',
     borderWidth: 1,
     paddingBottom: 40,
+    margin: 5,
+    borderRadius: 10,
   },
 
   text: {

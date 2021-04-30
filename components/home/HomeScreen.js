@@ -24,7 +24,7 @@ export const Main = () => {
         tabBarIcon: () => {
 
           if (route.name === 'Messages') {
-           return <MaterialIcons name="message" size={24} color="white" />
+           return <MaterialIcons name="message" size={24} color="white"/>
           } 
           
           else if(route.name === 'Feed') {
@@ -140,7 +140,9 @@ export function HomeScreen({navigation}) {
   return (
     <View>
       <View style={homeStyle.container}>
-        <Image source={{uri: profile_pic}} style={styles.smallImage} />
+        <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
+          <Image source={{uri: profile_pic}} style={styles.smallImage}/>
+        </TouchableOpacity>        
         <TextInput
           value={text} 
           style={homeStyle.textInput} 
@@ -168,13 +170,14 @@ export function HomeScreen({navigation}) {
   );
 }
 
-
 const homeStyle = StyleSheet.create({
   container: {
     backgroundColor: '#fff',
     display: 'flex',
     flexDirection: 'row',
-    alignItems: 'center'
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: 'silver'
   },
 
   textInput: { 
@@ -189,10 +192,9 @@ const homeStyle = StyleSheet.create({
     borderRadius: 20,
   },
   navbar: {
-    backgroundColor: 'green',
     flex: 1,
     borderWidth: 4,
     height: 1,
   },
-  
+ 
 })
