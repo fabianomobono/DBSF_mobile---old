@@ -55,7 +55,7 @@ export const LoginPage = ({navigation}) => {
   }
 
   return (
-    <KeyboardAvoidingView style={{flex: 1, paddingTop: 1}} behavior={Platform.OS === "ios" ? "padding" : "height"}>
+    <KeyboardAvoidingView style={{flex: 1}} behavior={Platform.OS === "ios" ? "padding" : "height"}>
       <View style={styles.container}>
         <Text style={styles.title}>DBSF</Text>
         <Text style={styles.title}>{token}</Text>

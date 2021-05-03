@@ -1,21 +1,35 @@
 import React, { useState } from 'react'
 import { Image, StyleSheet, Text, View } from 'react-native'
-import { ScrollView } from 'react-native-gesture-handler'
+import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler'
 import { useSelector } from 'react-redux'
 import { selectInfo} from '../info/infoSlice'
 import { styles } from '../../styles'
+import { NavigationContainer } from '@react-navigation/native'
+import { Conversation } from './Conversation'
+import { createStackNavigator } from '@react-navigation/stack'
+
+
+const Stack = createStackNavigator()
+
+
+export const DMSystem = () => {
+  return (
+      <Stack.Navigator initialRouteName='All Messages'>
+        
+      </Stack.Navigator>    
+  )
+}
 
 
 
-export const Messages = () => {
+export const Messages = ({navigation}) => {
   const info = useSelector(selectInfo)
-  console.log("this is ingo")
-  console.log(info)
   return(
     <ScrollView>
       <View>
         {info.friends.length > 0 ? info.friends.map(friend => 
-          <Conversation 
+          <ConversationPre
+            navigation={navigation}
             last_message_date={friend.last_message_date} 
             user={friend.user} 
             profile_pic={friend.profile_pic}
@@ -32,26 +46,41 @@ export const Messages = () => {
 
 
 
- const Conversation = (props) => {
+ const ConversationPre = (props) => {
   return(
-    <View style={messageStyles.container}>
-      <Image style={styles.smallImage} source={{uri: props.profile_pic}} />
-      <View style={messageStyles.convo_info}>
-        <Text style={messageStyles.user}>{props.user}</Text>
-        <Text style={messageStyles.date}>{props.last_message_date}</Text>
-      </View>
+   <TouchableOpacity onPress={() => props.navigation.navigate('Conversation',{
+     friend: props.user,
+   })}>
+      <View style={messageStyles.container}>
+        <Image style={styles.smallImage} source={{uri: props.profile_pic}} />
+        <View style={messageStyles.convo_info}>
+          <Text style={messageStyles.user}>{props.user}</Text>
+          <Text style={messageStyles.date}>{props.last_message_date}</Text>
+        </View>
     </View>
+   </TouchableOpacity>
   ) 
 }
 
 
 export const messageStyles = StyleSheet.create({
   container: {
+    backgroundColor: 'white',
     flexDirection: 'row',
     alignItems: 'center',
     padding: 20,
-    borderWidth: 4,
-    borderColor: 'silver'
+    borderWidth: 2,
+    borderColor: 'silver',
+    borderRadius: 10,
+    margin: 5,
+    shadowColor: 'black',
+    shadowOffset: {
+      width: 3,
+      height: 3,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 1,
+    
   },
   user: {
     fontWeight: 'bold'

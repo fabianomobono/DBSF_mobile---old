@@ -8,6 +8,8 @@ import { Main } from '../home/HomeScreen'
 import { login_token, selectToken } from '../status/statusSlice'
 import { SinglePostPage } from '../posts/SinglePostPage';
 import { FriendsProfile } from '../profile/FriendsProfile';
+import { WellArchitected } from 'aws-sdk';
+import { Conversation } from '../messages/Conversation';
  
 const Stack = createStackNavigator()
 
@@ -44,10 +46,21 @@ export function Whole() {
   if (token) {
     return (
       <NavigationContainer>
-          <Stack.Navigator initialRouteName='Home'>  
+          <Stack.Navigator initialRouteName='Home'  screenOptions={
+            {headerStyle: {
+              backgroundColor: '#1aa1f0',
+              
+            },
+            headerTintColor: 'white',
+            headerTitleStyle: {
+              fontWeight: 'bold'
+            },
+            title: 'DBSF'
+          }} >  
             <Stack.Screen name='Home' component={Main} />
             <Stack.Screen name='Single Post' component={SinglePostPage}/>
             <Stack.Screen name='Friends Profile' component={FriendsProfile}/>
+            <Stack.Screen name='Conversation' component={Conversation}/>
           </Stack.Navigator>
         </NavigationContainer>
     )
@@ -55,7 +68,7 @@ export function Whole() {
   else {
     return(
       <NavigationContainer>
-          <Stack.Navigator initialRouteName='Login'>  
+          <Stack.Navigator initialRouteName='Login' headerMode='none' >  
             <Stack.Screen name="Login" component={LoginPage} />
             <Stack.Screen name='SignUp' component={SignUpScreen} /> 
           </Stack.Navigator>

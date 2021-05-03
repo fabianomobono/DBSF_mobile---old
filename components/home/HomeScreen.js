@@ -4,7 +4,7 @@ import { styles } from '../../styles';
 import { Post } from '../posts/PostsList'
 import { useDispatch, useSelector } from 'react-redux'
 import { selectToken } from '../status/statusSlice';
-import { Messages } from '../messages/Messages' 
+import { DMSystem, Messages } from '../messages/Messages' 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { MaterialIcons, FontAwesome5, FontAwesome } from '@expo/vector-icons';
 import { Profile } from '../profile/Profile';
@@ -138,7 +138,7 @@ export function HomeScreen({navigation}) {
   }
 
   return (
-    <View>
+    <View >
       <View style={homeStyle.container}>
         <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
           <Image source={{uri: profile_pic}} style={styles.smallImage}/>

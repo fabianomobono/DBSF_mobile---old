@@ -9,9 +9,11 @@ import { Whole } from './components/whole/Whole';
 export default function App() {
   return(
     <Provider store={store} >
-      <Whole />
+      <Whole/>
     </Provider>
   )  
 }
+
+
 
 
