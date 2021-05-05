@@ -50,6 +50,7 @@ export const Messages = ({navigation}) => {
   return(
    <TouchableOpacity onPress={() => props.navigation.navigate('Conversation',{
      friend: props.user,
+     id: props.id
    })}>
       <View style={messageStyles.container}>
         <Image style={styles.smallImage} source={{uri: props.profile_pic}} />
