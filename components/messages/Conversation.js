@@ -8,6 +8,7 @@ import { useSelector } from 'react-redux';
 import { selectToken} from '../status/statusSlice'
 import { selectUsername } from '../info/infoSlice';
 
+
 export const Conversation = ({route}) => {
 
     // friend username
@@ -60,7 +61,6 @@ export const Conversation = ({route}) => {
         setMessages([...messages, {sender: data.sender, text: data.message, receiver: data.receiver, id: data.id}])
         setText('')
     }
-
     
     const sendMessage = () => {
         if (text.length > 0 && text.trim().length) {
@@ -107,6 +107,7 @@ const MessageContainer = (props) => {
     )
 }
 
+
 const MessageBubble = (props) => {
     const current_user = useSelector(selectUsername)
     if (props.sender === current_user){
@@ -120,7 +121,7 @@ const MessageBubble = (props) => {
     }
     else {
         return(
-            <View style={{ flexDirection: 'row-reverse'}}>
+            <View style={{ flexDirection: 'row'}}>
                 <View style={conversationStyles.messageBubbleReceiver}>
                     <Text style={{color: '#333', fontSize: 20}}>{props.text}</Text>
                 </View>
@@ -129,6 +130,7 @@ const MessageBubble = (props) => {
     }
    
 }
+
 
 const conversationStyles = StyleSheet.create({
     container: {        
@@ -177,11 +179,8 @@ const conversationStyles = StyleSheet.create({
         padding: 10,
         borderRadius: 20,
         backgroundColor: 'grey',
-        color: 'white',
         alignSelf: 'flex-start',
         maxWidth: 200,
-        marginRight: 330,
-        margin: 10,
-        
+        margin: 10,       
     }
 })
