@@ -4,9 +4,9 @@ import { ScrollView, TextInput } from 'react-native-gesture-handler'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import { FontAwesome } from '@expo/vector-icons'
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { selectToken} from '../status/statusSlice'
-import { selectUsername } from '../info/infoSlice';
+import { selectUsername, update_last_message_date } from '../info/infoSlice';
 
 
 export const Conversation = ({route}) => {
@@ -14,7 +14,7 @@ export const Conversation = ({route}) => {
     // friend username
     const { friend, id } = route.params
     const current_user = useSelector(selectUsername)
-
+    const dispatch = useDispatch()
 
     // create a new WebSocket connection with the friendship ID
     
@@ -58,8 +58,9 @@ export const Conversation = ({route}) => {
     // add the message to the messages array when the WebSocket emits an onmessage event
     chatSocket.onmessage = (e) => {
         const data = JSON.parse(e.data)      
-        setMessages([...messages, {sender: data.sender, text: data.message, receiver: data.receiver, id: data.id}])
+        setMessages([...messages, {sender: data.sender, text: data.message, receiver: data.receiver, id: data.id, date: data.date}])
         setText('')
+        dispatch(update_last_message_date({friend: data.receiver, date: data.date}))
     }
     
     const sendMessage = () => {
@@ -117,7 +118,7 @@ const MessageBubble = (props) => {
                      <Text style={{color: 'white', fontSize: 20}}>{props.text}</Text>
                  </View>
             </View>
-         )
+        )
     }
     else {
         return(
@@ -127,8 +128,7 @@ const MessageBubble = (props) => {
                 </View>
             </View>  
         )
-    }
-   
+    }   
 }
 
 
@@ -138,8 +138,7 @@ const conversationStyles = StyleSheet.create({
     },
     titleContainter: {
         alignItems: 'center',   
-        backgroundColor: 'blue',
-       
+        backgroundColor: 'blue',       
     }, 
     title: {
         fontWeight: 'bold',
@@ -154,7 +153,6 @@ const conversationStyles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: '#1aa1f0',
         padding: 5,        
-        
     },
     textInput: {
         backgroundColor: 'white',
@@ -172,8 +170,7 @@ const conversationStyles = StyleSheet.create({
         color: 'white',
         alignSelf: 'flex-start',
         maxWidth: 200,
-        margin: 10,
-        
+        margin: 10,       
     },
     messageBubbleReceiver: {
         padding: 10,

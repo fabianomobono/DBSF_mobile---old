@@ -47,20 +47,44 @@ export const Messages = ({navigation}) => {
 
 
  const ConversationPre = (props) => {
-  return(
-   <TouchableOpacity onPress={() => props.navigation.navigate('Conversation',{
-     friend: props.user,
-     id: props.id
-   })}>
-      <View style={messageStyles.container}>
-        <Image style={styles.smallImage} source={{uri: props.profile_pic}} />
-        <View style={messageStyles.convo_info}>
-          <Text style={messageStyles.user}>{props.user}</Text>
-          <Text style={messageStyles.date}>{props.last_message_date}</Text>
-        </View>
-    </View>
-   </TouchableOpacity>
-  ) 
+  const date = new Date(props.last_message_date)
+  var now = new Date()
+  now.setHours(now.getHours() + 4);
+  console.log(props.user, 'date:', date, 'now:', now)
+  
+  console.log(props.user, now - date)
+  if (now - date > 10000){
+    return(
+      <TouchableOpacity onPress={() => props.navigation.navigate('Conversation',{
+        friend: props.user,
+        id: props.id
+      })}>
+         <View style={messageStyles.container}>
+           <Image style={styles.smallImage} source={{uri: props.profile_pic}} />
+           <View style={messageStyles.convo_info}>
+             <Text style={messageStyles.user}>{props.user}</Text>
+             <Text style={messageStyles.DBSFdate}>{props.last_message_date.substring(0, props.last_message_date.length - 9)}</Text>
+           </View>
+       </View>
+      </TouchableOpacity>
+     ) 
+  }
+  else {
+    return(
+      <TouchableOpacity onPress={() => props.navigation.navigate('Conversation',{
+        friend: props.user,
+        id: props.id
+      })}>
+         <View style={messageStyles.container}>
+           <Image style={styles.smallImage} source={{uri: props.profile_pic}} />
+           <View style={messageStyles.convo_info}>
+             <Text style={messageStyles.user}>{props.user}</Text>
+             <Text style={messageStyles.date}>{props.last_message_date.substring(0, props.last_message_date.length - 9)}</Text>
+           </View>
+       </View>
+      </TouchableOpacity>
+    ) 
+  }  
 }
 
 
@@ -88,5 +112,9 @@ export const messageStyles = StyleSheet.create({
   },
   date: {
     color: 'silver'
+  },
+  DBSFdate: {
+    color: 'black',
+    backgroundColor: 'red'
   }
 })

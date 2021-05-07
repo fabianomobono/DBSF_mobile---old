@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-
+import moment from 'moment';
 
 
 export const infoSlice = createSlice({
@@ -34,12 +34,19 @@ export const infoSlice = createSlice({
       // change all the profile pic in the posts
       state.info.posts.map(post => {if(post.author === state.info.user){post.author_picture = action.payload}})
       state.info.profile_pic = action.payload
+    },
+    update_last_message_date(state, action){
+      const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+      const months = ['Jan', 'Feb', 'Mar','Apr', 'May','Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+      const date = new Date()  
+      const user = state.info.friends.find(friend => friend.user === action.payload.friend)
+      user.last_message_date = action.payload.date
     }
   }
 })
 
 
-export const { update_info, add_post, comment_post, update_profile_pic } = infoSlice.actions
+export const { update_info, add_post, comment_post, update_profile_pic, update_last_message_date } = infoSlice.actions
 export const selectInfo = state => state.info.info
 export const selectUsername = state => state.info.info.user
 export const selectProfile_pic = state => state.info.info.profile_pic
