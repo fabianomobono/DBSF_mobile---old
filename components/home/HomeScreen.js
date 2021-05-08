@@ -158,7 +158,9 @@ export function HomeScreen({navigation}) {
               id={t.id}
               key={t.id} 
               text={t.text} 
-              author={t.author } 
+              author={t.author}
+              first={t.first}
+              last={t.last} 
               profile_pic={t.author_picture}
               date={t.date}/>)
           : 

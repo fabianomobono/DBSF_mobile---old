@@ -2,7 +2,7 @@ import { useLinkProps } from '@react-navigation/native'
 import React from 'react'
 import { FlatList, Text, View, StyleSheet, Image } from 'react-native'
 import { styles } from '../../styles'
-import { TouchableWithoutFeedback } from 'react-native-gesture-handler'
+import { TouchableOpacity, TouchableWithoutFeedback } from 'react-native-gesture-handler'
 
 
 export const PostsList = () => {
@@ -18,6 +18,16 @@ export const PostsList = () => {
 
 
 export const Post = (props) => {
+
+  const friendsPage = () => {
+    props.navigation.navigate('Friends Profile', {
+        profile_pic: props.profile_pic,
+        user: props.author,
+        first: props.first,
+        last: props.last
+    })
+}
+
   return (
     <TouchableWithoutFeedback onPress={() => props.navigation.navigate('Single Post', {
       text: props.text,
@@ -28,18 +38,20 @@ export const Post = (props) => {
       comments: props.comments
     })}>
       <View style={postStyle.container}>
-      <View style={postStyle.info}>
-        <Image source={{uri:props.profile_pic}} style={styles.smallImage}/>
-        <View>
-          <Text style={postStyle.author}>{props.author}</Text>
-          <Text style={postStyle.date}>{props.date}</Text>
+        <View style={postStyle.info}>
+          <TouchableOpacity onPress={friendsPage}>
+            <Image source={{uri:props.profile_pic}} style={styles.smallImage}/>
+          </TouchableOpacity>       
+          <View>
+            <Text style={postStyle.author}>{props.author}</Text>
+            <Text style={postStyle.date}>{props.date}</Text>
+          </View>
         </View>
-      </View>
-      <View style={postStyle.postBody}>
-        <Text style={postStyle.text}>
-          {props.text}
-        </Text>
-      </View>
+        <View style={postStyle.postBody}>
+          <Text style={postStyle.text}>
+            {props.text}
+          </Text>
+        </View>
     </View>
     </TouchableWithoutFeedback>
   )

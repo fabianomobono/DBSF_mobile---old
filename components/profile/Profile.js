@@ -149,8 +149,7 @@ export const Profile = ({navigation}) => {
         <View style={profileStyle.fullImageBackground}>       
           <Image source={{uri:info.profile_pic}} style={profileStyle.fullImage} />
         </View>
-      </View>
-      
+      </View>     
     )   
   }
   else {

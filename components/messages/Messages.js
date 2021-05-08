@@ -7,6 +7,7 @@ import { styles } from '../../styles'
 import { NavigationContainer } from '@react-navigation/native'
 import { Conversation } from './Conversation'
 import { createStackNavigator } from '@react-navigation/stack'
+import { AntDesign, MaterialIcons } from '@expo/vector-icons';
 
 
 const Stack = createStackNavigator()
@@ -33,6 +34,8 @@ export const Messages = ({navigation}) => {
             last_message_date={friend.last_message_date} 
             user={friend.user} 
             profile_pic={friend.profile_pic}
+            last={friend.last}
+            first={friend.first}
             key={friend.id}
             id={friend.id}
             />)
@@ -46,50 +49,57 @@ export const Messages = ({navigation}) => {
 
 
 
- const ConversationPre = (props) => {
+const ConversationPre = (props) => {
   const date = new Date(props.last_message_date)
   var now = new Date()
   now.setHours(now.getHours() + 4);
-  console.log(props.user, 'date:', date, 'now:', now)
-  
-  console.log(props.user, now - date)
-  if (now - date > 10000){
-    return(
-      <TouchableOpacity onPress={() => props.navigation.navigate('Conversation',{
-        friend: props.user,
-        id: props.id
-      })}>
-         <View style={messageStyles.container}>
-           <Image style={styles.smallImage} source={{uri: props.profile_pic}} />
-           <View style={messageStyles.convo_info}>
-             <Text style={messageStyles.user}>{props.user}</Text>
-             <Text style={messageStyles.DBSFdate}>{props.last_message_date.substring(0, props.last_message_date.length - 9)}</Text>
-           </View>
-       </View>
-      </TouchableOpacity>
-     ) 
+
+  // function that navigates the the friends profile
+  const friendsPage = () => {
+    props.navigation.navigate('Friends Profile', {
+        profile_pic: props.profile_pic,
+        user: props.user,
+        first: props.first,
+        last: props.last
+    })
   }
-  else {
-    return(
-      <TouchableOpacity onPress={() => props.navigation.navigate('Conversation',{
-        friend: props.user,
-        id: props.id
-      })}>
-         <View style={messageStyles.container}>
-           <Image style={styles.smallImage} source={{uri: props.profile_pic}} />
-           <View style={messageStyles.convo_info}>
-             <Text style={messageStyles.user}>{props.user}</Text>
-             <Text style={messageStyles.date}>{props.last_message_date.substring(0, props.last_message_date.length - 9)}</Text>
-           </View>
-       </View>
+
+  return(   
+    <View style={messageStyles.container}>
+      <TouchableOpacity onPress={friendsPage}>
+        <Image style={styles.smallImage} source={{uri: props.profile_pic}}/>
       </TouchableOpacity>
-    ) 
-  }  
+      <View style={messageStyles.convo_info}>
+        <Text style={messageStyles.user}>{props.user}</Text>
+       
+        {now - date > 1000 ? 
+          <View style={{backgroundColor: 'rgba(255, 0, 0, 0.15)', borderRadius: 3}}>
+            <Text style={messageStyles.DBSFdate}>{props.last_message_date.substring(0, props.last_message_date.length - 9)}</Text>
+          </View>
+        :
+          <View style={{backgroundColor: 'rgba(0, 255, 0, 0.1)', borderRadius: 3}}>
+            <Text style={messageStyles.date}>{props.last_message_date.substring(0, props.last_message_date.length - 9)}</Text>
+          </View>
+        }
+          
+       
+      </View>
+      <View style={{marginLeft: 'auto', backgroundColor: 'rgba(52,52,52,0.1)', borderRadius: 100}}>
+        <TouchableOpacity style={{padding: 5}} onPress={() => props.navigation.navigate('Conversation',{
+          friend: props.user,
+          id: props.id
+          })}>
+          <MaterialIcons name="keyboard-arrow-right" size={44}  color="silver" />
+        </TouchableOpacity>
+      </View>
+    </View>
+  )
 }
 
 
 export const messageStyles = StyleSheet.create({
   container: {
+    flex: 1,
     backgroundColor: 'white',
     flexDirection: 'row',
     alignItems: 'center',
@@ -114,7 +124,7 @@ export const messageStyles = StyleSheet.create({
     color: 'silver'
   },
   DBSFdate: {
-    color: 'black',
-    backgroundColor: 'red'
+    padding: 5,
+    color: '#555',
   }
 })
