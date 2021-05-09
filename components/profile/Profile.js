@@ -85,6 +85,7 @@ export const Profile = ({navigation}) => {
     console.log(result)
     if (!result.cancelled) {
       setNewImage(result)
+      setSaveButton(true)
     }
   }
 

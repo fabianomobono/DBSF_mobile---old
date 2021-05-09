@@ -4,15 +4,15 @@ import { styles } from '../../styles';
 import { Post } from '../posts/PostsList'
 import { useDispatch, useSelector } from 'react-redux'
 import { selectToken } from '../status/statusSlice';
-import { DMSystem, Messages } from '../messages/Messages' 
+import { Messages } from '../messages/Messages' 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { MaterialIcons, FontAwesome5, FontAwesome } from '@expo/vector-icons';
+import { MaterialIcons, FontAwesome5, FontAwesome, AntDesign } from '@expo/vector-icons';
 import { Profile } from '../profile/Profile';
 import { update_info, selectInfo, add_post, selectProfile_pic, selectPosts } from '../info/infoSlice'
 import { logoutScreen } from '../login/login';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { FindPeople } from '../find/FindPeople';
+import { FriendRequests } from '../friendRequests/FriendRequests'
 
 
 // this is the tab navigator that contains the feed, messages, profile
@@ -42,6 +42,10 @@ export const Main = () => {
           else if (route.name === 'Search') {
             return <FontAwesome name="search" size={24} color="white" />
           }
+
+          else if (route.name === 'Friendship Requests') {
+            return <AntDesign name="adduser" size={24} color="white" />
+          }
         },
       })}
       tabBarOptions={{
@@ -62,7 +66,8 @@ export const Main = () => {
         <Tab.Screen name='Messages' component={Messages}/>
         <Tab.Screen name='Profile' component={Profile}/>
         <Tab.Screen name='Search' component={FindPeople} />
-        <Tab.Screen name='Logout' component={logoutScreen}/>        
+        <Tab.Screen name='Friendship Requests' component={FriendRequests}/>
+        <Tab.Screen name='Logout' component={logoutScreen}/>      
       </Tab.Navigator>
   )
 }

@@ -8,12 +8,16 @@ import { selectToken } from '../status/statusSlice'
 import { Post } from '../posts/PostsList'
 import { profileStyle } from './Profile'
 import { AntDesign } from '@expo/vector-icons';
+import { selectUsername } from '../info/infoSlice'
 
 
 export const FriendsProfile = ({route, navigation}) => {
 	
 	//set variables from navigation params
-	const { first, last, user, profile_pic } = route.params
+	const {user, profile_pic } = route.params
+	const [first, setFirst] = useState('')
+	const [last, setLast] = useState('')
+	const [email, setEmail] = useState('')
 	const token = useSelector(selectToken)
 	const [fullPic, setFullPic] = useState(false)
 
@@ -21,12 +25,9 @@ export const FriendsProfile = ({route, navigation}) => {
 	// set local state variables
 	const [posts, setPosts] = useState([])
 
-
-	
-	
 	useEffect(() => {
 	
-			// get this users posts from the server
+		// get this users posts from the server
 		fetch('https://dbsf.herokuapp.com/api/one_persons_posts', {
 		method: 'POST',
 		headers: {
@@ -39,9 +40,28 @@ export const FriendsProfile = ({route, navigation}) => {
 	.then(res =>{
 		console.log(res)
 		setPosts(res.posts.posts)
+		setFirst(res.posts.first)
+		setLast(res.posts.last)
+		setEmail(res.posts.email)
 	})
 	.catch(res => console.log(res))
 	},[])
+
+
+	const requestFriendship = () => {
+		const token =useSelector(selectToken)
+		fetch('https://dbsf.herokuapp.com/api/requestFriendship', {
+			method: 'POST',
+			headers: {
+				'Content-type': "application/json",
+				Authorization: 'Token '.concat(token)				
+			},
+			body: JSON.stringify({friend: user})
+		})
+		.then(res => res.json())
+		.then(res => console.log(res))
+		.catch(res => console.log('Oh great something went wrong...again!', res))
+	}
 
 	// show the full profile pic
 	if (fullPic){
@@ -70,12 +90,13 @@ export const FriendsProfile = ({route, navigation}) => {
 						<Text  style={{fontSize: 20 , color: 'white', fontWeight: 'bold'}}>Request Friendship</Text>
 					</TouchableOpacity>
 					<Text style={profileStyle.text}>Name: {first} {last}</Text>
-					<Text style={profileStyle.text}>Username: {user}</Text>               
+					<Text style={profileStyle.text}>Username: {user}</Text>    
+					<Text style={profileStyle.text}>Email: {email}</Text>           
 				</View>
 				<View>
 					
 					{
-					// if the user has written posts display the posts, else display empty posts list message
+					// if the user has written posts display the posts, else display empty posts-list message
 					posts.length ? posts.map(t =>                
 						<Post
 							navigation={navigation}
