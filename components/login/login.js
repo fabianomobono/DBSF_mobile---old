@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { View, Text, TouchableOpacity, TextInput, Image, Button, Keyboard, KeyboardAvoidingView } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
 import coglioni from '../../assets/coglioni.jpg'
-import { styles } from '../../styles'
+import { styles, colors } from '../../styles'
 import DateTimePicker from '@react-native-community/datetimepicker'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useDispatch, useSelector } from 'react-redux'
@@ -63,7 +63,7 @@ export const LoginPage = ({navigation}) => {
         <TextInput onChangeText={text => setUsername(text)} style={styles.textInput} placeholder='Username' autoCapitalize='none' />
         <TextInput onChangeText={text => setPassword(text)} secureTextEntry={true} style={styles.textInput} placeholder='Password' />
         <TouchableOpacity style={styles.button} onPress={login}>
-          <Text style={{fontSize: 20 , color: 'white'}}>Log In</Text>
+          <Text style={{fontSize: 20 , color: colors.white, fontWeight: 'bold'}}>Log In</Text>
         </TouchableOpacity>
         <Button 
           title='New here? Sign Up!'
@@ -196,7 +196,7 @@ export function SignUpScreen({navigation}) {
         </View>   
         </TouchableOpacity>
         <TouchableOpacity onPressOut={signUp} style={styles.button}>
-          <Text style={{fontSize: 20 , color: 'white'}}>Sign Up</Text>
+          <Text style={{fontSize: 20 , color: colors.white}}>Sign Up</Text>
         </TouchableOpacity>
       </View>    
     </ScrollView>    
@@ -224,7 +224,7 @@ export function logoutScreen({navigation}) {
   return (
     <View style={{ alignItems: 'center', flex: 1, justifyContent: 'center'}}>
       <TouchableOpacity onPressOut={logout_user} style={styles.button}>
-        <Text style={{padding: 10, fontSize: 20 , color: 'white', fontWeight: 'bold'}}>Log Out!</Text>
+        <Text style={{padding: 10, fontSize: 20 , color: colors.white, fontWeight: 'bold'}}>Log Out!</Text>
       </TouchableOpacity>
     </View>
   )

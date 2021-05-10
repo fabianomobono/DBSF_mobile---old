@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { View, Text, StyleSheet, ScrollView } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import { selectInfo, update_profile_pic } from '../info/infoSlice'
-import { styles } from '../../styles'
+import { styles, colors } from '../../styles'
 import { Image } from 'react-native'
 import { selectToken } from '../status/statusSlice'
 import { Post } from '../posts/PostsList'
@@ -144,7 +144,7 @@ export const Profile = ({navigation}) => {
       <View>
         <View style={{direction: 'rtl', flexDirection: 'row', backgroundColor: 'black'}}>
           <TouchableOpacity onPress={() => setFullPic(false)}>
-            <AntDesign name="close" size={30} color="white" style={styles.close} />
+            <AntDesign name="close" size={30} color={colors.white} style={styles.close} />
           </TouchableOpacity>
         </View>
         <View style={profileStyle.fullImageBackground}>       
@@ -174,10 +174,10 @@ export const Profile = ({navigation}) => {
           }
           <View style={profileStyle.updateProfilePicView}>
             <TouchableOpacity style={profileStyle.updateProfilePicButton} onPress={takePicture}>
-              <FontAwesome5 name="camera" size={30} color="grey" />
+              <FontAwesome5 name="camera" size={30} color={colors.grey} />
             </TouchableOpacity>
             <TouchableOpacity style={profileStyle.updateProfilePicButton} onPress={pickImage}>
-              <FontAwesome name="photo" size={30} color="grey" />
+              <FontAwesome name="photo" size={30} color={colors.grey} />
             </TouchableOpacity>
           </View>       
           <View>
@@ -218,20 +218,20 @@ export const profileStyle = StyleSheet.create({
   },
   title: {
     textAlign: 'center',
-    backgroundColor: 'red',
+    backgroundColor: colors.DBSFred,
     fontSize: 30,
-    color: '#444'
+    color: colors.darkGrey
   },
   profile_pic: {
     margin: 20,
     width: 200,
     height: 200,
     borderRadius: 100,
-    borderColor: 'powderblue',
+    borderColor: colors.powderBlue,
     borderWidth: 4,
   },
   text: {
-    color: '#777',
+    color: colors.grey,
     fontSize: 15,
     padding: 10,
     fontWeight: 'bold'
@@ -245,12 +245,12 @@ export const profileStyle = StyleSheet.create({
     paddingTop: 0
   },
   saveNewProfilePictureButton: {
-    backgroundColor: 'steelblue',
+    backgroundColor: colors.DBSFBlue,
     padding: 20,
     borderRadius: 50,
   },
   fullImageBackground: {
-    backgroundColor: 'black',
+    backgroundColor: colors.black,
     height: 600,
     justifyContent: 'center',
     alignItems: 'center',

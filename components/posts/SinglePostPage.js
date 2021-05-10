@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Text, View, TouchableOpacity, Image, StyleSheet } from 'react-native'
 import { postStyle } from './PostsList'
-import { styles } from '../../styles'
+import { colors, styles } from '../../styles'
 import { ScrollView, TextInput } from 'react-native-gesture-handler'
 import { useSelector, useDispatch } from 'react-redux'
 import { selectInfo, selectUsername, selectProfile_pic, selectComments, comment_post } from '../info/infoSlice'
@@ -138,37 +138,37 @@ const Comment = (props) => {
 const SinglePostStyle = StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: 'white',
-      borderColor: '#ddd',
+      backgroundColor: colors.white,
+      borderColor: colors.grey,
       borderWidth: 1,
          
     },
     commentTextInput: {
-        backgroundColor: '#eee',
+        backgroundColor: colors.lightGrey,
         padding: 20,
         fontSize: 15,
         borderRadius: 20,
-        color: '#444',
+        color: colors.darkGrey,
         marginTop: 5,
         margin: 10,
         
     },
     commentContainer: {
-        borderColor: '#999',
+        borderColor: colors.lightGrey,
         borderWidth: 2,
         borderRadius: 10,
         margin: 10,
     },
     comment: {
-        backgroundColor: 'rgba(200, 200, 200, 0.8)',
+        backgroundColor: colors.lightGrey,
         padding: 10,
         margin: 3,
-        borderColor: 'grey',
+        borderColor: colors.grey,
         borderWidth: 3,
         borderRadius: 10,        
     },
     commentText: {
-        color: '#666',
+        color: colors.darkGrey,
         fontSize: 15,
         marginLeft: 5,
     },

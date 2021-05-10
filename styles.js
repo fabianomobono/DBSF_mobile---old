@@ -1,6 +1,26 @@
 import { StyleSheet } from 'react-native'
 
 
+
+export const colors = {
+  magenta: 'magenta',
+  DBSFred: 'rgba(255, 0, 0, 0.15)',
+  DBSFBlue: '#1aa1f0',
+  DDSBGreen: 'rgba(0, 255, 0, 0.1)',
+  white: 'white',
+  black: 'black',
+  silver: 'silver',
+  grey: 'grey',
+  lightGrey: '#ddd',
+  goToColor: 'rgba(52,52,52,0.1)',
+  darkGrey: '#222',
+  lightGreen: 'rgba(101, 239, 101, 0.9)',
+  lightRed: "rgba(255, 50, 101, 0.8)",
+  lightSilver : 'rgba(0, 0, 0, 0.1)',
+  powderBlue: 'powderblue',
+}
+
+
 export const styles = StyleSheet.create({
     container: {
       flex: 1,
@@ -22,12 +42,12 @@ export const styles = StyleSheet.create({
       height: 200,
       borderRadius: 200,
       borderWidth: 3,
-      borderColor: 'white'
+      borderColor: colors.white
     },
     textInput: {
-      borderColor: 'grey',
+      borderColor: colors.grey,
       borderWidth: 1,
-      backgroundColor: 'white',
+      backgroundColor: colors.white,
       fontSize: 20,
       padding: 10,
       marginTop: 10,
@@ -37,7 +57,7 @@ export const styles = StyleSheet.create({
       
     },
     button: {
-      backgroundColor: '#1aa1f0',
+      backgroundColor: colors.DBSFBlue,
       width: 350,
       padding: 10,
       borderRadius: 20,
@@ -46,7 +66,7 @@ export const styles = StyleSheet.create({
     },
     centerText: {
       fontSize: 20,
-      color: 'silver',
+      color: colors.silver,
       textAlign: 'center',
       
     },
@@ -54,9 +74,9 @@ export const styles = StyleSheet.create({
       display: 'none'
     },
     textInputTouch: {
-      borderColor: 'grey',
+      borderColor: colors.grey,
       borderWidth: 1,
-      backgroundColor: 'white',
+      backgroundColor: colors.white,
       fontSize: 20,
       padding: 10,
       marginTop: 10,
@@ -79,14 +99,18 @@ export const styles = StyleSheet.create({
       margin: 20,
       fontSize: 20,
       padding: 10,
-      color: 'grey'
+      color: colors.grey
     },
     buttonText: {
-      color: 'white',
+      color: colors.white,
       fontSize: 15,
       fontWeight: 'bold'
     },
     close: {
      padding: 20,
-    }
+    },
+    
   });
+
+
+  

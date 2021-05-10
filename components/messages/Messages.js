@@ -3,7 +3,7 @@ import { Image, StyleSheet, Text, View } from 'react-native'
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler'
 import { useSelector } from 'react-redux'
 import { selectInfo} from '../info/infoSlice'
-import { styles } from '../../styles'
+import { styles, colors } from '../../styles'
 import { NavigationContainer } from '@react-navigation/native'
 import { Conversation } from './Conversation'
 import { createStackNavigator } from '@react-navigation/stack'
@@ -73,23 +73,23 @@ const ConversationPre = (props) => {
         <Text style={messageStyles.user}>{props.user}</Text>
        
         {now - date > 1000 ? 
-          <View style={{backgroundColor: 'rgba(255, 0, 0, 0.15)', borderRadius: 3}}>
+          <View style={{backgroundColor: colors.DBSFred, borderRadius: 3}}>
             <Text style={messageStyles.DBSFdate}>{props.last_message_date.substring(0, props.last_message_date.length - 9)}</Text>
           </View>
         :
-          <View style={{backgroundColor: 'rgba(0, 255, 0, 0.1)', borderRadius: 3}}>
+          <View style={{backgroundColor: colors.DBSFGreen, borderRadius: 3}}>
             <Text style={messageStyles.date}>{props.last_message_date.substring(0, props.last_message_date.length - 9)}</Text>
           </View>
         }
           
        
       </View>
-      <View style={{marginLeft: 'auto', backgroundColor: 'rgba(52,52,52,0.1)', borderRadius: 100}}>
+      <View style={{marginLeft: 'auto', backgroundColor: colors.goToColor, borderRadius: 100}}>
         <TouchableOpacity style={{padding: 5}} onPress={() => props.navigation.navigate('Conversation',{
           friend: props.user,
           id: props.id
           })}>
-          <MaterialIcons name="keyboard-arrow-right" size={44}  color="silver" />
+          <MaterialIcons name="keyboard-arrow-right" size={44}  color={colors.silver} />
         </TouchableOpacity>
       </View>
     </View>
@@ -100,15 +100,15 @@ const ConversationPre = (props) => {
 export const messageStyles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white',
+    backgroundColor: colors.white,
     flexDirection: 'row',
     alignItems: 'center',
     padding: 20,
     borderWidth: 2,
-    borderColor: 'silver',
+    borderColor: colors.silver,
     borderRadius: 10,
     margin: 5,
-    shadowColor: 'black',
+    shadowColor: colors.black,
     shadowOffset: {
       width: 3,
       height: 3,
@@ -121,10 +121,10 @@ export const messageStyles = StyleSheet.create({
     fontWeight: 'bold'
   },
   date: {
-    color: 'silver'
+    color: colors.silver
   },
   DBSFdate: {
     padding: 5,
-    color: '#555',
+    color: colors.grey,
   }
 })

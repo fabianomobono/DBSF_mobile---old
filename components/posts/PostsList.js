@@ -1,7 +1,7 @@
 import { useLinkProps } from '@react-navigation/native'
 import React from 'react'
 import { FlatList, Text, View, StyleSheet, Image } from 'react-native'
-import { styles } from '../../styles'
+import { styles, colors } from '../../styles'
 import { TouchableOpacity, TouchableWithoutFeedback } from 'react-native-gesture-handler'
 import { useSelector } from 'react-redux'
 import { selectUsername } from '../info/infoSlice'
@@ -75,8 +75,8 @@ export const Post = (props) => {
 export const postStyle = StyleSheet.create({
   container: {
     padding: 20,
-    backgroundColor: '#fff',
-    borderColor: 'silver',
+    backgroundColor: colors.white,
+    borderColor: colors.silver,
     borderWidth: 1,
     paddingBottom: 40,
     margin: 5,
@@ -84,7 +84,7 @@ export const postStyle = StyleSheet.create({
   },
 
   text: {
-    color: '#444',
+    color: colors.grey,
     fontSize: 15,
     padding: 20,
   },
@@ -104,7 +104,7 @@ export const postStyle = StyleSheet.create({
   date: {
     paddingTop: 1,
     padding: 5,
-    color: 'grey'
+    color: colors.grey
   },
 
   postBody: { 

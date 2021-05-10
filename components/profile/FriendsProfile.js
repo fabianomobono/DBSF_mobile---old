@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { ScrollView } from 'react-native-gesture-handler'
 import { View, Text, Image, StyleSheet, Button} from 'react-native'
 import { TouchableOpacity } from 'react-native'
-import { styles } from '../../styles'
+import { styles, colors } from '../../styles'
 import { useSelector } from 'react-redux'
 import { selectToken } from '../status/statusSlice'
 import { Post } from '../posts/PostsList'
@@ -74,9 +74,9 @@ export const FriendsProfile = ({route, navigation}) => {
 	if (fullPic){
 		return (
 			<View>
-			  <View style={{direction: 'rtl', flexDirection: 'row', backgroundColor: 'black'}}>
+			  <View style={{direction: 'rtl', flexDirection: 'row', backgroundColor: colors.black}}>
 				<TouchableOpacity onPress={() => setFullPic(false)}>
-				  <AntDesign name="close" size={30} color="white" style={styles.close} />
+				  <AntDesign name="close" size={30} color={colors.white} style={styles.close} />
 				</TouchableOpacity>
 			  </View>
 			  <View style={profileStyle.fullImageBackground}>       
@@ -94,7 +94,7 @@ export const FriendsProfile = ({route, navigation}) => {
 						<Image source={{uri: profile_pic}} style={profileStyle.profile_pic}/>
 					</TouchableOpacity>					
 					<TouchableOpacity style={styles.button}>
-						<Text  style={{fontSize: 20 , color: 'white', fontWeight: 'bold'}}>Request Friendship</Text>
+						<Text  style={{fontSize: 20 , color: colors.white, fontWeight: 'bold'}}>Request Friendship</Text>
 					</TouchableOpacity>
 					<Text style={profileStyle.text}>Name: {first} {last}</Text>
 					<Text style={profileStyle.text}>Username: {user}</Text>    
@@ -143,7 +143,7 @@ const FriendsProfileStyles = StyleSheet.create({
 	text: {
 		fontSize: 20,
 		fontWeight: 'bold',
-		color: 'grey',
+		color: colors.grey,
 		marginTop: 30,
 	},
 

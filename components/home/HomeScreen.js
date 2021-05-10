@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, ScrollView, TextInput, Image, StyleSheet } from 'react-native'
-import { styles } from '../../styles';
+import { styles, colors } from '../../styles';
 import { Post } from '../posts/PostsList'
 import { useDispatch, useSelector } from 'react-redux'
 import { selectToken } from '../status/statusSlice';
@@ -24,36 +24,36 @@ export const Main = () => {
         tabBarIcon: () => {
 
           if (route.name === 'Messages') {
-           return <MaterialIcons name="message" size={24} color="white"/>
+           return <MaterialIcons name="message" size={24} color={colors.white}/>
           } 
           
           else if(route.name === 'Feed') {
-            return <FontAwesome5 name="home" size={24} color="white" />
+            return <FontAwesome5 name="home" size={24} color={colors.white} />
           }
 
           else if(route.name === 'Profile'){
-            return <MaterialIcons name="face" size={24} color="white" />
+            return <MaterialIcons name="face" size={24} color={colors.white} />
           }
 
           else if (route.name === 'Logout'){
-            return <MaterialIcons name="logout" size={24} color="white" />
+            return <MaterialIcons name="logout" size={24} color={colors.white} />
           }
 
           else if (route.name === 'Search') {
-            return <FontAwesome name="search" size={24} color="white" />
+            return <FontAwesome name="search" size={24} color={colors.white} />
           }
 
           else if (route.name === 'Friendship Requests') {
-            return <AntDesign name="adduser" size={24} color="white" />
+            return <AntDesign name="adduser" size={24} color={colors.white} />
           }
         },
       })}
       tabBarOptions={{
-        activeTintColor: 'white',
-        inactiveTintColor: 'silver',
+        activeTintColor: colors.white,
+        inactiveTintColor: colors.silver,
         showLabel: false,
         style: {    
-          backgroundColor: '#1aa1f0',
+          backgroundColor: colors.DBSFBlue,
           height: 80,
           fontSize: 50,
         },
@@ -179,18 +179,18 @@ export function HomeScreen({navigation}) {
 
 const homeStyle = StyleSheet.create({
   container: {
-    backgroundColor: '#fff',
+    backgroundColor: colors.white,
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: 'silver'
+    borderColor: colors.silver,
   },
 
   textInput: { 
-    borderColor: 'grey',
+    borderColor: colors.grey,
     borderWidth: 1,
-    backgroundColor: 'white',
+    backgroundColor: colors.white,
     fontSize: 20,
     padding: 10,
     margin: 10,

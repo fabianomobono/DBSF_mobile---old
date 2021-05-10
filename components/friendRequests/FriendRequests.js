@@ -2,7 +2,7 @@ import React, {useState } from 'react'
 import { View, ScrollView, Text, StyleSheet, Image } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { useSelector } from 'react-redux'
-import { styles } from '../../styles'
+import { styles, colors } from '../../styles'
 import { selectFriendRequests } from '../info/infoSlice'
 import { FontAwesome, Entypo } from '@expo/vector-icons';
 
@@ -45,10 +45,10 @@ const FriendRequest = (props) => {
       <Text style={{fontWeight: 'bold', margin: 5, fontSize: 15, marginLeft: 20}}>{props.sender}</Text>
       <View style={{flexDirection: 'row', marginLeft: 'auto'}}>
         <TouchableOpacity style={requestStyles.button}>
-          <FontAwesome name="check" size={24} color="rgba(101, 239, 101, 0.9)" />
+          <FontAwesome name="check" size={24} color={colors.lightGreen} />
         </TouchableOpacity>
         <TouchableOpacity style={requestStyles.button}>
-          <Entypo name="circle-with-cross" size={24} color="rgba(255, 50, 101, 0.8)" />
+          <Entypo name="circle-with-cross" size={24} color={colors.lightRed} />
         </TouchableOpacity>
       </View>
     </View>
@@ -62,14 +62,14 @@ const requestStyles = StyleSheet.create({
   },
   requestContainer: {
     flexDirection: 'row',
-    backgroundColor: 'white',
+    backgroundColor: colors.white,
     borderWidth: 2,
-    borderColor: 'silver',
+    borderColor: colors.silver,
     borderRadius: 10,
     margin: 5,
     padding: 20,
     alignItems: 'center',
-    shadowColor: 'black',
+    shadowColor: colors.black,
     shadowOffset: {
       width: 3,
       height: 3,
@@ -78,7 +78,7 @@ const requestStyles = StyleSheet.create({
     shadowRadius: 1,
   },
   button: {
-    backgroundColor: 'rgba(0,0,0,0.1)',
+    backgroundColor: colors.lightSilver,
     padding: 20,
     borderRadius: 50,
     marginHorizontal: 5,
@@ -87,6 +87,6 @@ const requestStyles = StyleSheet.create({
     margin: 10,
     fontWeight: 'bold',
     fontSize: 20,
-    color: 'silver'
+    color: colors.silver
   }
 })

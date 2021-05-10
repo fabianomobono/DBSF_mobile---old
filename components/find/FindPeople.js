@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import {Text, View, ScrollView, TextInput, StyleSheet, Image } from 'react-native'
 import { useSelector } from 'react-redux'
-import { styles } from '../../styles'
+import { styles, colors } from '../../styles'
 import { selectToken } from '../status/statusSlice'
 import { messageStyles } from '../messages/Messages'
 import { TouchableWithoutFeedback } from 'react-native'
@@ -104,20 +104,20 @@ const findPeople = StyleSheet.create({
     resultUser : {
         marginTop: 10,
         borderWidth: 1,
-        borderColor: 'silver',
+        borderColor: colors.silver,
         borderRadius: 20,
-        backgroundColor: 'white',
+        backgroundColor: colors.white,
         flexDirection: 'row',
         alignItems: 'center',
         padding: 20,
     },
     info: {
-        color: 'silver',
+        color: colors.silver,
 
     } ,
     empty_list_message: {
         textAlign: 'center',
-        color: 'grey',
+        color: colors.grey,
         fontSize: 20,
         padding: 50,
     }   

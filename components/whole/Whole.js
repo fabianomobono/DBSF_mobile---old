@@ -10,6 +10,7 @@ import { SinglePostPage } from '../posts/SinglePostPage';
 import { FriendsProfile } from '../profile/FriendsProfile';
 import { WellArchitected } from 'aws-sdk';
 import { Conversation } from '../messages/Conversation';
+import { colors, styles } from '../../styles';
  
 const Stack = createStackNavigator()
 
@@ -48,19 +49,18 @@ export function Whole() {
       <NavigationContainer>
           <Stack.Navigator initialRouteName='Home'  screenOptions={
             {headerStyle: {
-              backgroundColor: '#1aa1f0',
+              backgroundColor: colors.DBSFBlue,
               
             },
-            headerTintColor: 'white',
+            headerTintColor: colors.white,
             headerTitleStyle: {
               fontWeight: 'bold'
             },
-            title: 'DBSF'
           }} >  
-            <Stack.Screen name='Home' component={Main} />
-            <Stack.Screen name='Single Post' component={SinglePostPage}/>
-            <Stack.Screen name='Friends Profile' component={FriendsProfile}/>
-            <Stack.Screen name='Conversation' component={Conversation}/>
+            <Stack.Screen name='Home' title='Home' component={Main}  />
+            <Stack.Screen name='Single Post' title='Single Post' component={SinglePostPage}/>
+            <Stack.Screen name='Friends Profile' title='Friends Profile' component={FriendsProfile}/>
+            <Stack.Screen name='Conversation' title='Conversation' component={Conversation}/>
           </Stack.Navigator>
         </NavigationContainer>
     )
@@ -68,8 +68,18 @@ export function Whole() {
   else {
     return(
       <NavigationContainer>
-          <Stack.Navigator initialRouteName='Login' headerMode='none' >  
-            <Stack.Screen name="Login" component={LoginPage} />
+          <Stack.Navigator initialRouteName='Login' screenOptions={
+            {headerStyle: {
+              backgroundColor: colors.DBSFBlue,
+              
+            },
+            headerTintColor: colors.white,
+            headerTitleStyle: {
+              fontWeight: 'bold'
+            },
+           
+          }} >  
+            <Stack.Screen name="Login" component={LoginPage} title='Login' />
             <Stack.Screen name='SignUp' component={SignUpScreen} /> 
           </Stack.Navigator>
         </NavigationContainer>
