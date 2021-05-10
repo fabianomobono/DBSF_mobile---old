@@ -3,6 +3,8 @@ import React from 'react'
 import { FlatList, Text, View, StyleSheet, Image } from 'react-native'
 import { styles } from '../../styles'
 import { TouchableOpacity, TouchableWithoutFeedback } from 'react-native-gesture-handler'
+import { useSelector } from 'react-redux'
+import { selectUsername } from '../info/infoSlice'
 
 
 export const PostsList = () => {
@@ -19,13 +21,25 @@ export const PostsList = () => {
 
 export const Post = (props) => {
 
-  const friendsPage = () => {
-    props.navigation.navigate('Friends Profile', {
+  // get the current user in order to decide if the to navigate the user's own profile page
+  // or a different user
+  const current_user = useSelector(selectUsername)
+
+
+  // navigate to the author's profile page
+  const friendsPage = () => {    
+    if(props.author === current_user) {
+      props.navigation.navigate('Profile')
+    }
+    else {
+      props.navigation.navigate('Friends Profile', {
         profile_pic: props.profile_pic,
         user: props.author,
         first: props.first,
         last: props.last
-    })
+      })
+    }
+    
 }
 
   return (

@@ -59,7 +59,7 @@ export const FindPeople = ({navigation}) => {
                 users.length > 0 ? 
                     users.map(user => <UserFriend first={user.first} last={user.last} profile_pic={user.profile_pic} user={user.user} navigation={navigation}/>)
                 :
-                    <Text style={findPeople.empty_list_message}>{requestSent ? 'No users that contain  in their username': 'Search for people' }</Text>
+                    <Text style={findPeople.empty_list_message}>{requestSent ? `No users that contain "${searchTerm}" in their username`: 'Search for people' }</Text>
                 :
                     <Text style={findPeople.empty_list_message}>Search for people</Text>
                 }

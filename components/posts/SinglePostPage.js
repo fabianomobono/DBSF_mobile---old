@@ -10,7 +10,7 @@ import { KeyboardAvoidingView } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 
-  export const SinglePostPage = ({ route }) => {
+  export const SinglePostPage = ({ route, navigation }) => {
 
     // parames from route
     const {text, author, date, profile_pic, id} = route.params
@@ -90,7 +90,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
                   {text}
                 </Text>
                 <View style={SinglePostStyle.commentContainer}>
-                  {comments.map(c => <Comment key={c.id} text={c.text} commentator={c.commentator} commentator_profile_pic={c.profile_pic}/>)}
+                  {comments.map(c => <Comment navigation={navigation} key={c.id} text={c.text} commentator={c.commentator} commentator_profile_pic={c.profile_pic}/>)}
                 </View>
                 <TextInput 
                   style={SinglePostStyle.commentTextInput} 
@@ -105,15 +105,34 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 }
 
 const Comment = (props) => {
-    return (
-        <View style={SinglePostStyle.comment}>
-          <View style={SinglePostStyle.commentInfo}>
+
+  // navigate to the commentator profile page
+  const current_user = useSelector(selectUsername)
+  const commentatorProfilePage = () => {
+    if (props.commentator === current_user) {
+      props.navigation.navigate('Profile')
+    }
+    else{
+      props.navigation.navigate('Friends Profile', {
+        profile_pic: props.commentator_profile_pic,
+        user: props.commentator,
+        first: props.first,
+        last: props.last
+      })
+    }
+  }
+
+  return (
+      <View style={SinglePostStyle.comment}>
+        <View style={SinglePostStyle.commentInfo}>
+          <TouchableOpacity onPress={commentatorProfilePage}>
             <Image source={{uri: props.commentator_profile_pic}} style={SinglePostStyle.commentPic}/>
-            <Text style={SinglePostStyle.commentAuthor}>{props.commentator}</Text>
-          </View>
-          <Text style={SinglePostStyle.commentText}>{props.text}</Text>
+          </TouchableOpacity>
+          <Text style={SinglePostStyle.commentAuthor}>{props.commentator}</Text>
         </View>
-    )
+        <Text style={SinglePostStyle.commentText}>{props.text}</Text>
+      </View>
+  )
 }
 
 const SinglePostStyle = StyleSheet.create({

@@ -15,11 +15,17 @@ export const FriendsProfile = ({route, navigation}) => {
 	
 	//set variables from navigation params
 	const {user, profile_pic } = route.params
+
+	// set local state
 	const [first, setFirst] = useState('')
 	const [last, setLast] = useState('')
 	const [email, setEmail] = useState('')
-	const token = useSelector(selectToken)
 	const [fullPic, setFullPic] = useState(false)
+	const [status, SetStatus] = useState('')
+
+	// get the current user from the redux store
+	const token = useSelector(selectToken)
+	
 
 
 	// set local state variables
@@ -43,6 +49,7 @@ export const FriendsProfile = ({route, navigation}) => {
 		setFirst(res.posts.first)
 		setLast(res.posts.last)
 		setEmail(res.posts.email)
+		alert(res.status)
 	})
 	.catch(res => console.log(res))
 	},[])
