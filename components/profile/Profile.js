@@ -1,18 +1,19 @@
-import React, { useEffect, useState } from 'react' 
-import { View, Text, StyleSheet, ScrollView } from 'react-native'
-import { useDispatch, useSelector } from 'react-redux'
-import { selectInfo, update_profile_pic } from '../info/infoSlice'
-import { styles, colors } from '../../styles'
-import { Image } from 'react-native'
-import { selectToken } from '../status/statusSlice'
-import { Post } from '../posts/PostsList'
 import * as ImagePicker from 'expo-image-picker'
-import { Platform } from 'react-native'
-import { TouchableWithoutFeedback } from 'react-native'
-import { TouchableOpacity } from 'react-native-gesture-handler'
-import { FontAwesome5, FontAwesome } from '@expo/vector-icons'
-import { AntDesign } from '@expo/vector-icons';
 
+import { FontAwesome, FontAwesome5 } from '@expo/vector-icons'
+import React, { useEffect, useState } from 'react'
+import { ScrollView, StyleSheet, Text, View } from 'react-native'
+import { colors, styles } from '../../styles'
+import { selectInfo, update_profile_pic } from '../info/infoSlice'
+import { useDispatch, useSelector } from 'react-redux'
+
+import { AntDesign } from '@expo/vector-icons';
+import { Image } from 'react-native'
+import { Platform } from 'react-native'
+import { Post } from '../posts/PostsList'
+import { TouchableOpacity } from 'react-native-gesture-handler'
+import { TouchableWithoutFeedback } from 'react-native'
+import { selectToken } from '../status/statusSlice'
 
 export const Profile = ({navigation}) => {
 

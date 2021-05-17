@@ -1,11 +1,11 @@
-import React, {useState } from 'react'
-import { View, ScrollView, Text, StyleSheet, Image } from 'react-native'
-import { TouchableOpacity } from 'react-native-gesture-handler'
-import { useSelector } from 'react-redux'
-import { styles, colors } from '../../styles'
-import { selectFriendRequests } from '../info/infoSlice'
-import { FontAwesome, Entypo } from '@expo/vector-icons';
+import { Entypo, FontAwesome } from '@expo/vector-icons';
+import { Image, ScrollView, StyleSheet, Text, View } from 'react-native'
+import React, {useState} from 'react'
+import { colors, styles } from '../../styles'
 
+import { TouchableOpacity } from 'react-native-gesture-handler'
+import { selectFriendRequests } from '../info/infoSlice'
+import { useSelector } from 'react-redux'
 
 export const FriendRequests = ({navigation}) => {
   const friendRequests = useSelector(selectFriendRequests)
@@ -57,36 +57,34 @@ const FriendRequest = (props) => {
 
 
 const requestStyles = StyleSheet.create({
-  outerContainer: {
-
-  },
-  requestContainer: {
-    flexDirection: 'row',
-    backgroundColor: colors.white,
-    borderWidth: 2,
-    borderColor: colors.silver,
-    borderRadius: 10,
-    margin: 5,
-    padding: 20,
-    alignItems: 'center',
-    shadowColor: colors.black,
-    shadowOffset: {
-      width: 3,
-      height: 3,
-    },
-    shadowOpacity: 0.1,
-    shadowRadius: 1,
-  },
   button: {
     backgroundColor: colors.lightSilver,
-    padding: 20,
     borderRadius: 50,
     marginHorizontal: 5,
+    padding: 20
+  },
+  outerContainer: {},
+  requestContainer: {
+    alignItems: 'center',
+    backgroundColor: colors.white,
+    borderColor: colors.silver,
+    borderRadius: 10,
+    borderWidth: 2,
+    flexDirection: 'row',
+    margin: 5,
+    padding: 20,
+    shadowColor: colors.black,
+    shadowOffset: {
+      height: 3,
+      width: 3
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 1
   },
   title: {
-    margin: 10,
-    fontWeight: 'bold',
+    color: colors.silver,
     fontSize: 20,
-    color: colors.silver
+    fontWeight: 'bold',
+    margin: 10
   }
 })

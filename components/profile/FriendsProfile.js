@@ -1,15 +1,14 @@
+import { Image, StyleSheet, Text, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { ScrollView } from 'react-native-gesture-handler'
-import { View, Text, Image, StyleSheet, Button} from 'react-native'
-import { TouchableOpacity } from 'react-native'
-import { styles, colors } from '../../styles'
-import { useSelector } from 'react-redux'
-import { selectToken } from '../status/statusSlice'
-import { Post } from '../posts/PostsList'
-import { profileStyle } from './Profile'
-import { AntDesign } from '@expo/vector-icons';
-import { selectUsername } from '../info/infoSlice'
+import { ScrollView, TouchableWithoutFeedback } from 'react-native-gesture-handler'
+import { colors, styles } from '../../styles'
 
+import { AntDesign } from '@expo/vector-icons';
+import { Post } from '../posts/PostsList'
+import { TouchableOpacity } from 'react-native'
+import { profileStyle } from './Profile'
+import { selectToken } from '../status/statusSlice'
+import { useSelector } from 'react-redux'
 
 export const FriendsProfile = ({route, navigation}) => {
 	
@@ -21,13 +20,11 @@ export const FriendsProfile = ({route, navigation}) => {
 	const [last, setLast] = useState('')
 	const [email, setEmail] = useState('')
 	const [fullPic, setFullPic] = useState(false)
-	const [status, SetStatus] = useState('')
+	const [status, setStatus] = useState('')
 
 	// get the current user from the redux store
 	const token = useSelector(selectToken)
 	
-
-
 	// set local state variables
 	const [posts, setPosts] = useState([])
 
@@ -44,32 +41,71 @@ export const FriendsProfile = ({route, navigation}) => {
 	})
 	.then(res => res.json())
 	.then(res =>{
-		console.log(res)
+		
+		// set all the local variables
 		setPosts(res.posts.posts)
 		setFirst(res.posts.first)
 		setLast(res.posts.last)
 		setEmail(res.posts.email)
-		alert(res.status)
+		setStatus(res.status)	
 	})
 	.catch(res => console.log(res))
 	},[])
 
 
 	const requestFriendship = () => {
-		const token =useSelector(selectToken)
+		// change the status to pending
+		setStatus('pending or rejected')
+
 		fetch('https://dbsf.herokuapp.com/api/requestFriendship', {
 			method: 'POST',
 			headers: {
 				'Content-type': "application/json",
 				Authorization: 'Token '.concat(token)				
 			},
-			body: JSON.stringify({friend: user})
+			body: JSON.stringify({potentialFriend: user})
 		})
 		.then(res => res.json())
-		.then(res => console.log(res))
+		.then(res => {
+			if (res.response === 'request sent') {
+				setStatus(res.reponse)
+			}
+			else if (res.response === 'this friendship already exists') {
+				alert('something is wrong the friendship already exists')
+			}
+		})
 		.catch(res => console.log('Oh great something went wrong...again!', res))
 	}
 
+	//infriend logic
+	const unFriend = () => {
+		setStatus('not friends')
+	}
+
+	// function that decides what the Friendship request button should display
+	const buttonText = () => {
+		switch(status) {
+			case 'friends':
+				return 	<TouchableOpacity style={styles.button} onPress={unFriend}>
+									<Text  style={{fontSize: 20 , color: colors.white, fontWeight: 'bold'}}>Unfriend </Text>
+								</TouchableOpacity>
+
+			case 'not friends':
+				return 	<TouchableOpacity style={styles.button} onPress={requestFriendship}>
+									<Text  style={{fontSize: 20 , color: colors.white, fontWeight: 'bold'}}>Request Friendship</Text>
+								</TouchableOpacity>
+				
+			case 'pending or rejected':
+				return 	<TouchableWithoutFeedback style={styles.buttonDisabled}>
+									<Text  style={{fontSize: 20 , color: colors.white, fontWeight: 'bold'}}>Pending</Text>
+								</TouchableWithoutFeedback>
+
+			case 'request sent':
+				return <TouchableWithoutFeedback style={styles.buttonDisabled}>
+									<Text  style={{fontSize: 20 , color: colors.white, fontWeight: 'bold'}}>Request sent!</Text>
+								</TouchableWithoutFeedback>
+		}
+	}
 	// show the full profile pic
 	if (fullPic){
 		return (
@@ -93,9 +129,7 @@ export const FriendsProfile = ({route, navigation}) => {
 					<TouchableOpacity onPress={() => setFullPic(true)}>
 						<Image source={{uri: profile_pic}} style={profileStyle.profile_pic}/>
 					</TouchableOpacity>					
-					<TouchableOpacity style={styles.button}>
-						<Text  style={{fontSize: 20 , color: colors.white, fontWeight: 'bold'}}>Request Friendship</Text>
-					</TouchableOpacity>
+					{buttonText()}
 					<Text style={profileStyle.text}>Name: {first} {last}</Text>
 					<Text style={profileStyle.text}>Username: {user}</Text>    
 					<Text style={profileStyle.text}>Email: {email}</Text>           
@@ -124,27 +158,24 @@ export const FriendsProfile = ({route, navigation}) => {
 				</View>     
 			</ScrollView>
 		)
-	}
-
-	
+	}	
 }
 
 const FriendsProfileStyles = StyleSheet.create({
-	container: {
-		alignItems: 'center',
-		padding: 20,
-		flex: 1,
-	},
-	profile_pic: {
-		width: 200, 
-		height: 200, 
-		borderRadius: 200
-	},
-	text: {
-		fontSize: 20,
-		fontWeight: 'bold',
-		color: colors.grey,
-		marginTop: 30,
-	},
-
+  container: {
+    alignItems: 'center',
+    flex: 1,
+    padding: 20
+  },
+  profile_pic: {
+    borderRadius: 200,
+    height: 200,
+    width: 200
+  },
+  text: {
+    color: colors.grey,
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginTop: 30
+  }
 })

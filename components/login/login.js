@@ -1,13 +1,13 @@
+import { Button, Image, Keyboard, KeyboardAvoidingView, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import React, { useState } from 'react'
-import { View, Text, TouchableOpacity, TextInput, Image, Button, Keyboard, KeyboardAvoidingView } from 'react-native'
+import { colors, styles } from '../../styles'
+import { login_token, logout, selectToken } from '../status/statusSlice'
+import { useDispatch, useSelector } from 'react-redux'
+
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import DateTimePicker from '@react-native-community/datetimepicker'
 import { ScrollView } from 'react-native-gesture-handler'
 import coglioni from '../../assets/coglioni.jpg'
-import { styles, colors } from '../../styles'
-import DateTimePicker from '@react-native-community/datetimepicker'
-import AsyncStorage from '@react-native-async-storage/async-storage'
-import { useDispatch, useSelector } from 'react-redux'
-import { login_token, logout, selectToken } from '../status/statusSlice'
-
 
 // login page component
 export const LoginPage = ({navigation}) => {
@@ -37,7 +37,6 @@ export const LoginPage = ({navigation}) => {
       headers: {
         'Content-Type': 'application/json'
       },
-      credentials: 'same-origin',
       body: JSON.stringify({username: username, password: password})
     })
     // when it comes back...translate to JSON
@@ -51,7 +50,7 @@ export const LoginPage = ({navigation}) => {
         dispatch(login_token(data.token))
         
         }
-      })  
+      }).catch(res => console.log('something is not right',res))  
   }
 
   return (
@@ -178,8 +177,8 @@ export function SignUpScreen({navigation}) {
         <Text style={styles.title}>Sign up for DBSF </Text>
         <TextInput style={styles.textInput} placeholder='First Name' value={firstName} onChangeText={text => setFirstName(text)}/>
         <TextInput style={styles.textInput} placeholder='Last Name' value={lastName} onChangeText={text => setLastName(text)}/>
-        <TextInput style={styles.textInput} placeholder='Username' value={username} onChangeText={text => setUsername(text)}/>
-        <TextInput style={styles.textInput} placeholder='Email' value={email} onChangeText={text => setEmail(text)}/>
+        <TextInput style={styles.textInput} placeholder='Username' value={username} onChangeText={text => setUsername(text)} autoCapitalize='none'/>
+        <TextInput style={styles.textInput} placeholder='Email' value={email} onChangeText={text => setEmail(text)} autoCapitalize='none'/>
         <TextInput style={styles.textInput} placeholder='Password' secureTextEntry={true} value={password} onChangeText={text => setPassword(text)}/>
         <TextInput style={styles.textInput} placeholder='Confirmation' secureTextEntry={true} value={confirmation} onChangeText={text => setConfirmation(text)}/>
         <TouchableOpacity onPress={showDatepicker} style={styles.textInputTouch}>
