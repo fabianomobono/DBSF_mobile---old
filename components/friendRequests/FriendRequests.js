@@ -10,18 +10,22 @@ import { useSelector } from 'react-redux'
 export const FriendRequests = ({navigation}) => {
   const friendRequests = useSelector(selectFriendRequests)
   return (
-    <ScrollView>
-      <View style={{alignItems: 'center'}}>
-        <Text style={requestStyles.title}>Pending Friend Request</Text>
-      </View>
+    <ScrollView>      
       {friendRequests.length > 0 ? 
-        friendRequests.map(request => <FriendRequest
-          navigation={navigation}
-          sender={request.sender}
-          profile_pic={request.sender_profile_pic}
-        />)
+        <View style={{alignItems: 'center'}} >
+          <Text style={requestStyles.title}>Pending Friend Request</Text>
+          {friendRequests.map(request => <FriendRequest
+            navigation={navigation}
+            sender={request.sender}
+            profile_pic={request.sender_profile_pic}
+          />)
+          }
+      </View>
+        
       :
-        <Text>No Friend Requests at this time</Text>
+        <View style={requestStyles.noRequestsView}>
+          <Text style={requestStyles.noRequestsText}>No Friend Requests at this time</Text>
+        </View>
       }
     </ScrollView>
   )
@@ -57,21 +61,36 @@ const FriendRequest = (props) => {
 
 
 const requestStyles = StyleSheet.create({
+  noRequestsView: {
+    marginTop: '50%'
+    
+  },
+  noRequestsText: {
+    color: colors.DBSFBlue,
+    textAlign: 'center',
+    fontSize: 20,
+    fontWeight: 'bold',
+    padding: 20,
+    color: colors.silver
+  },
   button: {
     backgroundColor: colors.lightSilver,
     borderRadius: 50,
     marginHorizontal: 5,
     padding: 20
   },
-  outerContainer: {},
+  outerContainer: {
+    flex: 1,
+  },
   requestContainer: {
+    width: '90%',
     alignItems: 'center',
     backgroundColor: colors.white,
     borderColor: colors.silver,
     borderRadius: 10,
     borderWidth: 2,
     flexDirection: 'row',
-    margin: 5,
+    margin: 1,
     padding: 20,
     shadowColor: colors.black,
     shadowOffset: {
