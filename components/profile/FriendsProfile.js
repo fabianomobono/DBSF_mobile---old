@@ -71,7 +71,7 @@ export const FriendsProfile = ({route, navigation}) => {
 				setStatus(res.reponse)
 			}
 			else if (res.response === 'this friendship already exists') {
-				alert('something is wrong the friendship already exists')
+				alert('something is wrong, the friendship already exists')
 			}
 		})
 		.catch(res => console.log('Oh great something went wrong...again!', res))
