@@ -1,14 +1,14 @@
-import React, { useState } from 'react'
-import { Image, StyleSheet, Text, View } from 'react-native'
-import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler'
-import { useSelector } from 'react-redux'
-import { selectInfo} from '../info/infoSlice'
-import { styles, colors } from '../../styles'
-import { NavigationContainer } from '@react-navigation/native'
-import { Conversation } from './Conversation'
-import { createStackNavigator } from '@react-navigation/stack'
 import { AntDesign, MaterialIcons } from '@expo/vector-icons';
+import { Image, StyleSheet, Text, View } from 'react-native'
+import React, { useState } from 'react'
+import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler'
+import { colors, styles } from '../../styles'
 
+import { Conversation } from './Conversation'
+import { NavigationContainer } from '@react-navigation/native'
+import { createStackNavigator } from '@react-navigation/stack'
+import { selectInfo } from '../info/infoSlice'
+import { useSelector } from 'react-redux'
 
 const Stack = createStackNavigator()
 
@@ -121,7 +121,8 @@ export const messageStyles = StyleSheet.create({
     fontWeight: 'bold'
   },
   date: {
-    color: colors.silver
+    color: colors.silver,
+    padding: 5,
   },
   DBSFdate: {
     padding: 5,

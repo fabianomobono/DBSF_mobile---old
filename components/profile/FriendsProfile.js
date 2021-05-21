@@ -2,13 +2,14 @@ import { Image, StyleSheet, Text, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { ScrollView, TouchableWithoutFeedback } from 'react-native-gesture-handler'
 import { colors, styles } from '../../styles'
+import { useDispatch, useSelector } from 'react-redux'
 
 import { AntDesign } from '@expo/vector-icons';
 import { Post } from '../posts/PostsList'
 import { TouchableOpacity } from 'react-native'
 import { profileStyle } from './Profile'
 import { selectToken } from '../status/statusSlice'
-import { useSelector } from 'react-redux'
+import { update_info } from '../info/infoSlice';
 
 export const FriendsProfile = ({route, navigation}) => {
 	
@@ -22,6 +23,7 @@ export const FriendsProfile = ({route, navigation}) => {
 	const [fullPic, setFullPic] = useState(false)
 	const [status, setStatus] = useState('')
 
+	const dispatch = useDispatch()
 	// get the current user from the redux store
 	const token = useSelector(selectToken)
 	
@@ -79,7 +81,26 @@ export const FriendsProfile = ({route, navigation}) => {
 
 	//infriend logic
 	const unFriend = () => {
-		setStatus('not friends')
+		//fetch a post request with the friends username in the body
+		fetch('https://dbsf.herokuapp.com/api/unfriend', {
+			method: 'POST',
+			headers: {
+				Authorization: 'Token '.concat(token),
+				'Content-type': 'application/json'
+			},
+			body: JSON.stringify({soonExFriend: user})
+		})
+		.then(res => res.json())
+		.then(res => {
+			if (res.response === 'friendship was deleted' || res.response === 'friendship was deleted...received Friendship'){
+				setStatus('not friends')
+				dispatch(update_info(res.info))
+			}
+		})
+		.catch(res => {
+			console.log('something went wrong with Unfriending')
+			console.log(res)
+		})
 	}
 
 	// function that decides what the Friendship request button should display

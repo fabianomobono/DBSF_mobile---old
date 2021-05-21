@@ -5,7 +5,7 @@ export const colors = {
   darkGrey: '#222',
   DBSFBlue: '#1aa1f0',
   DBSFred: 'rgba(255, 0, 0, 0.15)',
-  DDSBGreen: 'rgba(0, 255, 0, 0.1)',
+  DBSFGreen: 'rgba(0, 255, 0, 0.1)',
   goToColor: 'rgba(52,52,52,0.1)',
   grey: 'grey',
   lightGreen: 'rgba(101, 239, 101, 0.9)',
