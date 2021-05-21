@@ -2,10 +2,11 @@ import { Animated, Image, ScrollView, StyleSheet, Text, View } from 'react-nativ
 import { Entypo, FontAwesome } from '@expo/vector-icons';
 import React, { useRef, useState } from 'react'
 import { colors, styles } from '../../styles'
+import { selectFriendRequests, update_info } from '../info/infoSlice'
+import { useDispatch, useSelector } from 'react-redux'
 
 import { TouchableOpacity } from 'react-native-gesture-handler'
-import { selectFriendRequests } from '../info/infoSlice'
-import { useSelector } from 'react-redux'
+import { selectToken } from '../status/statusSlice';
 
 export const FriendRequests = ({navigation}) => {
   const friendRequests = useSelector(selectFriendRequests)
@@ -15,6 +16,7 @@ export const FriendRequests = ({navigation}) => {
         <View style={{alignItems: 'center'}} >
           <Text style={requestStyles.title}>Pending Friend Request</Text>
           {friendRequests.map(request => <FriendRequest
+            id={request.id}
             key={request.id}
             navigation={navigation}
             sender={request.sender}
@@ -36,6 +38,8 @@ export const FriendRequests = ({navigation}) => {
 const FriendRequest = (props) => {
 
   const [status, setStatus] = useState('pending')
+  const token = useSelector(selectToken)
+  const dispatch = useDispatch()
 
   // animation stuff
   const fadeAnim = useRef(new Animated.Value(1)).current
@@ -64,7 +68,7 @@ const FriendRequest = (props) => {
         heightAnim,
         {
           toValue: 0,
-          duration: 5000,
+          duration: 4000,
           useNativeDriver: false,
         }
       )
@@ -75,24 +79,62 @@ const FriendRequest = (props) => {
   // make a post request to accept the friendship
   const acceptFriendship = () => {
     // change the text to Accepted
-    setStatus('accepted')
-    // send the post request
     
-
-    // get back the new info from the server and update the redux store...so that the friendlist and the posts update
-
+    // send the post request
+    fetch('https://dbsf.herokuapp.com/api/confirmFriendRequest', {
+      method: 'POST',
+      headers: {
+        'Content-type': 'application/json',
+        Authorization: 'Token '.concat(token)   
+      },
+      body: JSON.stringify({friendshipId: props.id})
+    })
+    .then(res => res.json())
+    .then(res => {
+      // get back the new info from the server and update the redux store...so that the friendlist and the posts update
+      
+      setStatus('accepted')
+      hideRequest()
+      setTimeout(function(){dispatch(update_info(res.info)); }, 3000);
+      
+      console.log('dfgsdflgkjsdfklgj')
+      
+    })
+    .catch(res => {
+      console.log('something went wrong')
+      console.log(res)
+      alert('something went wrong with update info')
+      
+    })
     // The friend request needs to disappear after a while...
-    hideRequest()
+    
   }
 
   // make a post request to ignore the friendship
   const ignoreFriendship = () => {
     // change the text to ignored
-    setStatus('ignored')
+    
     // send a post request to the server to update the database
+    fetch('https://dbsf.herokuapp.com/api/ignoreFriendRequest', {
+      method: 'POST',
+      headers: {
+        'Content-type': 'application/json',
+        Authorization: 'Token '.concat(token)
+      },
+      body: JSON.stringify({friendshipId: props.id})
+    })
+    .then(res => res.json())
+    .then(res => {
+      setStatus('ignored')
+      hideRequest()
+    })
+    .catch(res => {
+      console.log('something went wrong with ignoring')
+      console.log(res)
+    })
 
     // when to response comes back the friendrequest should disappear
-    hideRequest()
+    
     
    
   }

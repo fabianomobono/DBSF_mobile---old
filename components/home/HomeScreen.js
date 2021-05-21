@@ -1,25 +1,25 @@
+import { AntDesign, FontAwesome, FontAwesome5, MaterialIcons } from '@expo/vector-icons';
+import { Image, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native'
 import React, { useEffect, useState } from 'react';
-import { View, Text, ScrollView, TextInput, Image, StyleSheet } from 'react-native'
-import { styles, colors } from '../../styles';
-import { Post } from '../posts/PostsList'
+import { add_post, selectInfo, selectPosts, selectProfile_pic, update_info } from '../info/infoSlice'
+import { colors, styles } from '../../styles';
 import { useDispatch, useSelector } from 'react-redux'
-import { selectToken } from '../status/statusSlice';
-import { Messages } from '../messages/Messages' 
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { MaterialIcons, FontAwesome5, FontAwesome, AntDesign } from '@expo/vector-icons';
-import { Profile } from '../profile/Profile';
-import { update_info, selectInfo, add_post, selectProfile_pic, selectPosts } from '../info/infoSlice'
-import { logoutScreen } from '../login/login';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+
 import { FindPeople } from '../find/FindPeople';
 import { FriendRequests } from '../friendRequests/FriendRequests'
-
+import { Messages } from '../messages/Messages'
+import { Post } from '../posts/PostsList'
+import { Profile } from '../profile/Profile';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { logoutScreen } from '../login/login';
+import { selectToken } from '../status/statusSlice';
 
 // this is the tab navigator that contains the feed, messages, profile
 const Tab = createBottomTabNavigator()
 export const Main = () => {
   return (
-      <Tab.Navigator initialRouteName='Feed'
+      <Tab.Navigator
       screenOptions={({ route }) => ({
         tabBarIcon: () => {
 
@@ -100,13 +100,10 @@ export function HomeScreen({navigation}) {
         },
         credentials: 'same-origin',  
       }).then(res => res.json()).then(r => {
-        
-        
-        
+   
         setUser(r.hello.user)
         console.log('useEffect in HomeScreen Component has been called...this gets triggered when the get info fetch comes back')
-        
-
+ 
         // add the information to the redux store
         dispatch(update_info(r.hello))
         
