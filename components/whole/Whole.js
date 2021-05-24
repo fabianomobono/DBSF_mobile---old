@@ -1,17 +1,19 @@
-import React, { useState, useEffect } from 'react'
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useDispatch, useSelector } from 'react-redux'
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack'
 import { LoginPage, SignUpScreen } from '../login/login'
-import { Main } from '../home/HomeScreen'
-import { login_token, selectToken } from '../status/statusSlice'
-import { SinglePostPage } from '../posts/SinglePostPage';
-import { FriendsProfile } from '../profile/FriendsProfile';
-import { WellArchitected } from 'aws-sdk';
-import { Conversation } from '../messages/Conversation';
+import React, { useEffect, useState } from 'react'
 import { colors, styles } from '../../styles';
- 
+import { login_token, selectToken } from '../status/statusSlice'
+import { useDispatch, useSelector } from 'react-redux'
+
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Conversation } from '../messages/Conversation';
+import { FriendsProfile } from '../profile/FriendsProfile';
+import { Main } from '../home/HomeScreen'
+import { NavigationContainer } from '@react-navigation/native';
+import { PasswordReset } from '../login/passwordReset'
+import { SinglePostPage } from '../posts/SinglePostPage';
+import { WellArchitected } from 'aws-sdk';
+import { createStackNavigator } from '@react-navigation/stack'
+
 const Stack = createStackNavigator()
 
 
@@ -80,7 +82,8 @@ export function Whole() {
            
           }} >  
             <Stack.Screen name="Login" component={LoginPage} title='Login' />
-            <Stack.Screen name='SignUp' component={SignUpScreen} /> 
+            <Stack.Screen name='SignUp' component={SignUpScreen} />
+            <Stack.Screen name='Forgot Password' component={PasswordReset} /> 
           </Stack.Navigator>
         </NavigationContainer>
     )

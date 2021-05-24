@@ -67,19 +67,16 @@ export const LoginPage = ({navigation}) => {
         <Button 
           title='New here? Sign Up!'
           // the on object that carries parameters needs to be inside the () of navigation.navigate()
-          onPress={() => navigation.navigate('SignUp', {
-            itemId: 86,
-            otherParam: 'This is another param'
-          }
-          )}
+          onPress={() => navigation.navigate('SignUp')}
         />
+        <Button title="Forgot Password" onPress={() => navigation.navigate('Forgot Password')}/>
       </View>
     </KeyboardAvoidingView>   
   )
 }
 
 // sign up page component
-export function SignUpScreen({navigation}) {
+export function SignUpScreen() {
   
   const [date, setDate] = useState(new Date());
   const [mode, setMode] = useState('date');
@@ -122,8 +119,6 @@ export function SignUpScreen({navigation}) {
       return false
     }
 
-
-    console.log(date)
     // start the sign up process in the server
     fetch('https://dbsf.herokuapp.com/api/mobileSignUp', {
       method: 'POST',
@@ -178,7 +173,7 @@ export function SignUpScreen({navigation}) {
         <TextInput style={styles.textInput} placeholder='First Name' value={firstName} onChangeText={text => setFirstName(text)}/>
         <TextInput style={styles.textInput} placeholder='Last Name' value={lastName} onChangeText={text => setLastName(text)}/>
         <TextInput style={styles.textInput} placeholder='Username' value={username} onChangeText={text => setUsername(text)} autoCapitalize='none'/>
-        <TextInput style={styles.textInput} placeholder='Email' value={email} onChangeText={text => setEmail(text)} autoCapitalize='none'/>
+        <TextInput style={styles.textInput} placeholder='Email' keyboardType='email-address' value={email} onChangeText={text => setEmail(text)} autoCapitalize='none'/>
         <TextInput style={styles.textInput} placeholder='Password' secureTextEntry={true} value={password} onChangeText={text => setPassword(text)}/>
         <TextInput style={styles.textInput} placeholder='Confirmation' secureTextEntry={true} value={confirmation} onChangeText={text => setConfirmation(text)}/>
         <TouchableOpacity onPress={showDatepicker} style={styles.textInputTouch}>

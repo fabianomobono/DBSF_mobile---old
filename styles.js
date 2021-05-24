@@ -95,7 +95,8 @@ export const styles = StyleSheet.create({
       marginTop: 10,
       padding: 10,
       textAlign: 'center',
-      width: 350
+      width: 350,
+      margin: 10,
     },
     textInputTouch: {
       backgroundColor: colors.white,
@@ -109,8 +110,9 @@ export const styles = StyleSheet.create({
     },
     title: {
       color: '#999',
-      fontSize: 30,
-      paddingTop: 20
+      fontSize: 20,
+      paddingTop: 20,
+      fontWeight: 'bold',
     }
   });
 
