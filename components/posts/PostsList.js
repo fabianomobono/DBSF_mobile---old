@@ -1,11 +1,11 @@
-import { useLinkProps } from '@react-navigation/native'
-import React from 'react'
-import { FlatList, Text, View, StyleSheet, Image } from 'react-native'
-import { styles, colors } from '../../styles'
+import { FlatList, Image, StyleSheet, Text, View } from 'react-native'
 import { TouchableOpacity, TouchableWithoutFeedback } from 'react-native-gesture-handler'
-import { useSelector } from 'react-redux'
-import { selectUsername } from '../info/infoSlice'
+import { colors, styles } from '../../styles'
 
+import React from 'react'
+import { selectUsername } from '../info/infoSlice'
+import { useLinkProps } from '@react-navigation/native'
+import { useSelector } from 'react-redux'
 
 export const PostsList = () => {
   return (
@@ -40,7 +40,15 @@ export const Post = (props) => {
       })
     }
     
-}
+  }
+
+  const like = () => {
+    alert('like')
+  }
+
+  const dislike = () => {
+    alert('dislike')
+  }
 
   return (
     <TouchableWithoutFeedback onPress={() => props.navigation.navigate('Single Post', {
@@ -65,6 +73,14 @@ export const Post = (props) => {
           <Text style={postStyle.text}>
             {props.text}
           </Text>
+          <View style={postStyle.feeling}>
+            <TouchableOpacity style={postStyle.feelingTouch}>
+              <Text style={postStyle.feelingText}>Like</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={postStyle.feelingTouch}>  
+              <Text style={postStyle.feelingText}>Dislike</Text>
+            </TouchableOpacity>
+          </View>
         </View>
     </View>
     </TouchableWithoutFeedback>
@@ -82,7 +98,23 @@ export const postStyle = StyleSheet.create({
     margin: 5,
     borderRadius: 10,
   },
-
+  feelingTouch: {
+    backgroundColor: colors.DBSFGreen,
+  },
+  feeling: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    borderWidth: 3,
+    borderColor: colors.silver,
+  },
+  feelingText: {
+    padding: 5,
+    paddingHorizontal: 40,
+    fontWeight: 'bold',
+    color: colors.silver,
+    borderWidth: 2,
+    
+  },
   text: {
     color: colors.grey,
     fontSize: 15,

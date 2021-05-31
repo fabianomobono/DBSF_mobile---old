@@ -62,7 +62,7 @@ export function Whole() {
             <Stack.Screen name='Home' title='Home' component={Main}  />
             <Stack.Screen name='Single Post' title='Single Post' component={SinglePostPage}/>
             <Stack.Screen name='Friends Profile' title='Friends Profile' component={FriendsProfile}/>
-            <Stack.Screen name='Conversation' title='Conversation' component={Conversation}/>
+            <Stack.Screen name='Conversation' component={Conversation} options={({ route }) => ({ title: route.params.friend })}/>
           </Stack.Navigator>
         </NavigationContainer>
     )

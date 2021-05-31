@@ -1,13 +1,15 @@
+import { KeyboardAvoidingView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useEffect, useRef, useState } from 'react'
-import { StyleSheet, Text, View, KeyboardAvoidingView, TouchableOpacity } from 'react-native'
 import { ScrollView, TextInput } from 'react-native-gesture-handler'
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
-import { FontAwesome } from '@expo/vector-icons'
-import { useSelector, useDispatch } from 'react-redux';
-import { selectToken} from '../status/statusSlice'
 import { selectUsername, update_last_message_date } from '../info/infoSlice';
+import { useDispatch, useSelector } from 'react-redux';
 
+import { FontAwesome } from '@expo/vector-icons'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import { color } from 'react-native-reanimated';
+import { colors } from '../../styles';
+import { selectToken } from '../status/statusSlice'
+import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 
 export const Conversation = ({route}) => {
 
@@ -82,7 +84,7 @@ export const Conversation = ({route}) => {
     return (
       <KeyboardAvoidingView style={conversationStyles.container} behavior={Platform.OS === "ios" ? "padding" : "height"} keyboardVerticalOffset={60} >
         <View style={conversationStyles.titleContainter}>
-            <Text style={conversationStyles.title}>This is your conversation with {friend}</Text>
+            
         </View>
         <MessageContainer messages={messages}/>
         <View style={conversationStyles.textInputContainer}>
@@ -138,7 +140,8 @@ const conversationStyles = StyleSheet.create({
     },
     titleContainter: {
         alignItems: 'center',   
-        backgroundColor: 'blue',       
+        backgroundColor: colors.silver,
+        height: 2,       
     }, 
     title: {
         fontWeight: 'bold',
