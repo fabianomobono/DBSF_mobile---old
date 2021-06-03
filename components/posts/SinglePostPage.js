@@ -1,16 +1,16 @@
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { Text, View, TouchableOpacity, Image, StyleSheet } from 'react-native'
-import { postStyle } from './PostsList'
-import { colors, styles } from '../../styles'
 import { ScrollView, TextInput } from 'react-native-gesture-handler'
-import { useSelector, useDispatch } from 'react-redux'
-import { selectInfo, selectUsername, selectProfile_pic, selectComments, comment_post } from '../info/infoSlice'
-import { selectToken } from '../status/statusSlice'
+import { colors, styles } from '../../styles'
+import { comment_post, selectComments, selectInfo, selectProfile_pic, selectUsername } from '../info/infoSlice'
+import { useDispatch, useSelector } from 'react-redux'
+
 import { KeyboardAvoidingView } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import { postStyle } from './PostsList'
+import { selectToken } from '../status/statusSlice'
 
-
-  export const SinglePostPage = ({ route, navigation }) => {
+export const SinglePostPage = ({ route, navigation }) => {
 
     // parames from route
     const {text, author, date, profile_pic, id} = route.params
@@ -76,31 +76,39 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
     }
   
     return (      
-          <KeyboardAwareScrollView>
-            <View style={SinglePostStyle.container}>
-              <View style={postStyle.info}>
-                <Image source={{uri:profile_pic}} style={styles.smallImage}/>
-                <View>
-                  <Text style={postStyle.author}>{author}</Text>
-                  <Text style={postStyle.date}>{date}</Text>
-                </View>
-              </View>
-              <View style={postStyle.postBody}>
-                <Text style={postStyle.text}>
-                  {text}
-                </Text>
-                <View style={SinglePostStyle.commentContainer}>
-                  {comments.map(c => <Comment navigation={navigation} key={c.id} text={c.text} commentator={c.commentator} commentator_profile_pic={c.profile_pic}/>)}
-                </View>
-                <TextInput 
-                  style={SinglePostStyle.commentTextInput} 
-                  placeholder='Comment...' value={commentText} 
-                  onChangeText={comment => setCommentText(comment)}
-                  onSubmitEditing={new_comment}
-                />
-              </View>
+      <KeyboardAwareScrollView>
+        <View style={SinglePostStyle.container}>
+          <View style={postStyle.info}>
+            <Image source={{uri:profile_pic}} style={styles.smallImage}/>
+            <View>
+              <Text style={postStyle.author}>{author}</Text>
+              <Text style={postStyle.date}>{date}</Text>
             </View>
-          </KeyboardAwareScrollView>
+          </View>
+          <View style={postStyle.postBody}>
+            <Text style={postStyle.text}>
+              {text}
+            </Text>
+            <View style={postStyle.feeling}>
+              <TouchableOpacity style={postStyle.feelingTouchYay}>
+                <Text style={postStyle.feelingTextYay}>&#128077;</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={postStyle.feelingTouchNay}>  
+                <Text style={postStyle.feelingTextNay}>&#128078;</Text>
+              </TouchableOpacity>
+            </View>
+            <View style={SinglePostStyle.commentContainer}>
+              {comments.map(c => <Comment navigation={navigation} key={c.id} text={c.text} commentator={c.commentator} commentator_profile_pic={c.profile_pic}/>)}
+            </View>
+            <TextInput 
+              style={SinglePostStyle.commentTextInput} 
+              placeholder='Comment...' value={commentText} 
+              onChangeText={comment => setCommentText(comment)}
+              onSubmitEditing={new_comment}
+            />
+          </View>
+        </View>
+      </KeyboardAwareScrollView>
     )
 }
 
@@ -141,7 +149,9 @@ const SinglePostStyle = StyleSheet.create({
       backgroundColor: colors.white,
       borderColor: colors.grey,
       borderWidth: 1,
-         
+      paddingHorizontal: 20,
+      borderBottomLeftRadius: 10,
+      borderBottomRightRadius: 10,  
     },
     commentTextInput: {
         backgroundColor: colors.lightGrey,
@@ -150,14 +160,14 @@ const SinglePostStyle = StyleSheet.create({
         borderRadius: 20,
         color: colors.darkGrey,
         marginTop: 5,
-        margin: 10,
+        marginVertical: 10,
         
     },
     commentContainer: {
         borderColor: colors.lightGrey,
         borderWidth: 2,
         borderRadius: 10,
-        margin: 10,
+        marginVertical: 10,
     },
     comment: {
         backgroundColor: colors.lightGrey,

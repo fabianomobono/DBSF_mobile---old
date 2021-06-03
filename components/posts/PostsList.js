@@ -50,15 +50,19 @@ export const Post = (props) => {
     alert('dislike')
   }
 
-  return (
-    <TouchableWithoutFeedback onPress={() => props.navigation.navigate('Single Post', {
+  const singlePost = () => {
+    props.navigation.navigate('Single Post', {
       text: props.text,
       author: props.author,
       date: props.date,
       profile_pic: props.profile_pic,
       id: props.id,
       comments: props.comments
-    })}>
+    })
+  }
+
+  return (
+    <TouchableWithoutFeedback onPress={singlePost}>
       <View style={postStyle.container}>
         <View style={postStyle.info}>
           <TouchableOpacity onPress={friendsPage}>
@@ -73,15 +77,18 @@ export const Post = (props) => {
           <Text style={postStyle.text}>
             {props.text}
           </Text>
-          <View style={postStyle.feeling}>
-            <TouchableOpacity style={postStyle.feelingTouch}>
-              <Text style={postStyle.feelingText}>Like</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={postStyle.feelingTouch}>  
-              <Text style={postStyle.feelingText}>Dislike</Text>
-            </TouchableOpacity>
-          </View>
         </View>
+        <View style={postStyle.feeling}>
+          <TouchableOpacity style={postStyle.feelingTouchYay}>
+            <Text style={postStyle.feelingTextYay}>&#128077;</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={postStyle.feelingTouchNay}>  
+            <Text style={postStyle.feelingTextNay}>&#128078;</Text>
+          </TouchableOpacity>
+        </View>
+        <TouchableOpacity style={postStyle.commentContainer} onPress={singlePost}>
+          <Text style={postStyle.commentButton}>Comment...</Text>
+        </TouchableOpacity>
     </View>
     </TouchableWithoutFeedback>
   )
@@ -89,57 +96,73 @@ export const Post = (props) => {
 
 
 export const postStyle = StyleSheet.create({
+  author: {
+    fontSize: 15,
+    fontWeight: 'bold',
+    padding: 5,
+    paddingBottom: 1
+  },
+  commentButton: {
+    color: colors.grey,
+  },
+  commentContainer: {
+    backgroundColor: colors.silver,
+    borderRadius: 10,
+    marginVertical: 10,
+    padding: 10
+  },
   container: {
-    padding: 20,
     backgroundColor: colors.white,
     borderColor: colors.silver,
-    borderWidth: 1,
-    paddingBottom: 40,
-    margin: 5,
     borderRadius: 10,
+    borderWidth: 1,
+    margin: 5,
+    padding: 20,
+    paddingBottom: 40
   },
-  feelingTouch: {
-    backgroundColor: colors.DBSFGreen,
+  date: {
+    color: colors.grey,
+    padding: 5,
+    paddingTop: 1
   },
   feeling: {
+    borderColor: colors.silver,
+    borderRadius: 10,
+    borderWidth: 1,
     flexDirection: 'row',
     justifyContent: 'space-around',
-    borderWidth: 3,
-    borderColor: colors.silver,
+    padding: 10
   },
-  feelingText: {
-    padding: 5,
-    paddingHorizontal: 40,
-    fontWeight: 'bold',
+  feelingTextNay: {
     color: colors.silver,
-    borderWidth: 2,
-    
+    fontSize: 20,
+    fontWeight: 'bold',
+    padding: 5,
+    paddingHorizontal: 40
   },
-  text: {
-    color: colors.grey,
-    fontSize: 15,
-    padding: 20,
+  feelingTextYay: {
+    color: colors.silver,
+    fontSize: 20,
+    fontWeight: 'bold',
+    padding: 5,
+    paddingHorizontal: 40
   },
-
+  feelingTouchNay: {
+    backgroundColor: colors.DBSFred,
+    borderRadius: 10
+  },
+  feelingTouchYay: {
+    backgroundColor: colors.DBSFGreen,
+    borderRadius: 10
+  },
   info: {
     flexDirection: 'row',
     padding: 5
   },
-
-  author: {  
-    padding: 5,
-    paddingBottom: 1,
-    fontWeight: 'bold',
-    fontSize: 15
-  },
-
-  date: {
-    paddingTop: 1,
-    padding: 5,
-    color: colors.grey
-  },
-
-  postBody: { 
-
+  postBody: {},
+  text: {
+    color: colors.darkGrey,
+    fontSize: 15,
+    padding: 20
   }
 })

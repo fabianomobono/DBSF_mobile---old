@@ -182,6 +182,10 @@ const homeStyle = StyleSheet.create({
     alignItems: 'center',
     borderWidth: 1,
     borderColor: colors.silver,
+    borderBottomLeftRadius: 10,
+    borderBottomRightRadius: 10,
+    marginHorizontal: 5,
+    marginBottom: 5,
   },
 
   textInput: { 
@@ -191,7 +195,7 @@ const homeStyle = StyleSheet.create({
     fontSize: 20,
     padding: 10,
     margin: 10,
-    width: 340,
+    width: 330,
     textAlign: 'center',
     borderRadius: 20,
   },
