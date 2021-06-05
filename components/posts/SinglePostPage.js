@@ -74,6 +74,14 @@ export const SinglePostPage = ({ route, navigation }) => {
         alert('Comments can not be empty...or start with a space')
       } 
     }
+
+    const like = () => {
+      alert('like')
+    }
+
+    const unlike = () => {
+      alert('unlike')
+    }
   
     return (      
       <KeyboardAwareScrollView>
@@ -90,10 +98,10 @@ export const SinglePostPage = ({ route, navigation }) => {
               {text}
             </Text>
             <View style={postStyle.feeling}>
-              <TouchableOpacity style={postStyle.feelingTouchYay}>
+              <TouchableOpacity style={postStyle.feelingTouchYay} onPress={like}>
                 <Text style={postStyle.feelingTextYay}>&#128077;</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={postStyle.feelingTouchNay}>  
+              <TouchableOpacity style={postStyle.feelingTouchNay} onPress={unlike}>  
                 <Text style={postStyle.feelingTextNay}>&#128078;</Text>
               </TouchableOpacity>
             </View>

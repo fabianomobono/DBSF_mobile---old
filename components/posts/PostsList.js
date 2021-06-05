@@ -1,8 +1,8 @@
 import { FlatList, Image, StyleSheet, Text, View } from 'react-native'
+import React, { useState } from 'react'
 import { TouchableOpacity, TouchableWithoutFeedback } from 'react-native-gesture-handler'
 import { colors, styles } from '../../styles'
 
-import React from 'react'
 import { selectUsername } from '../info/infoSlice'
 import { useLinkProps } from '@react-navigation/native'
 import { useSelector } from 'react-redux'
@@ -24,7 +24,8 @@ export const Post = (props) => {
   // get the current user in order to decide if the to navigate the user's own profile page
   // or a different user
   const current_user = useSelector(selectUsername)
-
+  const [likes, setLikes] = useState(0)
+  const [dislikes, setDislikes] = useState(0)
 
   // navigate to the author's profile page
   const friendsPage = () => {    
@@ -43,11 +44,13 @@ export const Post = (props) => {
   }
 
   const like = () => {
-    alert('like')
+    setLikes(likes + 1)
+    
   }
 
   const dislike = () => {
-    alert('dislike')
+    setDislikes(dislikes + 1)
+    
   }
 
   const singlePost = () => {
@@ -79,11 +82,13 @@ export const Post = (props) => {
           </Text>
         </View>
         <View style={postStyle.feeling}>
-          <TouchableOpacity style={postStyle.feelingTouchYay}>
+          <TouchableOpacity style={postStyle.feelingTouchYay} onPress={like}>
             <Text style={postStyle.feelingTextYay}>&#128077;</Text>
+            <Text style={postStyle.feelingCounter}>{likes}</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={postStyle.feelingTouchNay}>  
+          <TouchableOpacity style={postStyle.feelingTouchNay} onPress={dislike}>  
             <Text style={postStyle.feelingTextNay}>&#128078;</Text>
+            <Text style={postStyle.feelingCounter}>{dislikes}</Text>
           </TouchableOpacity>
         </View>
         <TouchableOpacity style={postStyle.commentContainer} onPress={singlePost}>
@@ -148,10 +153,14 @@ export const postStyle = StyleSheet.create({
     paddingHorizontal: 40
   },
   feelingTouchNay: {
+    flexDirection: 'row',
+    alignItems: 'center',
     backgroundColor: colors.DBSFred,
     borderRadius: 10
   },
   feelingTouchYay: {
+    flexDirection: 'row',
+    alignItems: 'center',
     backgroundColor: colors.DBSFGreen,
     borderRadius: 10
   },
@@ -164,5 +173,11 @@ export const postStyle = StyleSheet.create({
     color: colors.darkGrey,
     fontSize: 15,
     padding: 20
+  },
+  feelingCounter: {
+    marginRight: 5,
+    color: colors.grey,
+    fontWeight: 'bold',
+    
   }
 })
