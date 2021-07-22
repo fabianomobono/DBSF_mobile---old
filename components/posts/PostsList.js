@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import { TouchableOpacity, TouchableWithoutFeedback } from 'react-native-gesture-handler'
 import { colors, styles } from '../../styles'
 
+import { selectToken } from '../status/statusSlice'
 import { selectUsername } from '../info/infoSlice'
 import { useLinkProps } from '@react-navigation/native'
 import { useSelector } from 'react-redux'
@@ -26,6 +27,7 @@ export const Post = (props) => {
   const current_user = useSelector(selectUsername)
   const [likes, setLikes] = useState(0)
   const [dislikes, setDislikes] = useState(0)
+  const token = useSelector(selectToken)
 
   // navigate to the author's profile page
   const friendsPage = () => {    
@@ -44,12 +46,54 @@ export const Post = (props) => {
   }
 
   const like = () => {
-    setLikes(likes + 1)
+    fetch('https://dbsf.herokuapp.com/api/like_a_post', {
+      method: 'POST',
+      headers: {
+        Authorization: 'Token '.concat(token),
+        'Content-type': 'application/json'
+      },
+      body: JSON.stringify({post_id: props.id})
+    })
+    .then(res => res.json())
+    .then(response =>{
+      if(response.response === 'like created'){
+        alert(response.response)
+        setLikes(likes + 1)
+      }
+      else {
+        alert('unlike')
+        setLikes(likes - 1)
+      }
+     
+    
+    })
+    .catch(res => {
+      console.log('Something is wrong')
+      console.log(res)
+    })
     
   }
 
   const dislike = () => {
-    setDislikes(dislikes + 1)
+    fetch('https:/dbsf.herokuapp.com/api/dislike_a_post', {
+      method: 'POST',
+      headers: {
+        Authorization: 'Token '.concat(token),
+        'Content-type': 'application/json'
+      },
+      body: JSON.stringify({post_id: props.id})
+    })
+    .then(res => res.json())
+    .then(response => {
+      if(response.response === 'dislike created'){
+        alert(response.response)
+        setDislikes(dislikes  + 1)
+      }
+      else {
+        alert('removing dislike')
+        setDislikes(dislikes - 1)
+      }
+    })
     
   }
 
