@@ -45,6 +45,8 @@ export const Post = (props) => {
     
   }
 
+
+  // the like function
   const like = () => {
     fetch('https://dbsf.herokuapp.com/api/like_a_post', {
       method: 'POST',
@@ -60,6 +62,7 @@ export const Post = (props) => {
         alert(response.response)
         setLikes(likes + 1)
       }
+      // TODO: Create the logic to unlike a post, delete Like object in the databas, so it does not show up
       else {
         alert('unlike')
         setLikes(likes - 1)
@@ -74,6 +77,7 @@ export const Post = (props) => {
     
   }
 
+  // the dislike function TODO: create the logic Front end and Back end to un-dislike a post, delete dislike and other database logic
   const dislike = () => {
     fetch('https:/dbsf.herokuapp.com/api/dislike_a_post', {
       method: 'POST',
