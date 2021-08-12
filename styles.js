@@ -2,7 +2,7 @@ import { StyleSheet } from 'react-native'
 
 export const colors = {
   black: 'black',
-  darkGrey: '#222',
+  darkGrey: '#232',
   DBSFBlue: '#1aa1f0',
   DBSFred: 'rgba(255, 0, 0, 0.15)',
   DBSFGreen: 'rgba(0, 255, 0, 0.1)',

@@ -94,7 +94,11 @@ export const Post = (props) => {
         setDislikes(dislikes  + 1)
       }
       else {
+        // here you need to send a post request to remove the like object from the database
+        // TODO create the remove like API in DJANGO REST
         alert('removing dislike')
+        
+
         setDislikes(dislikes - 1)
       }
     })
