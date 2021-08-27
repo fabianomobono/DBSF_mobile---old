@@ -15,7 +15,8 @@ export const colors = {
   magenta: 'magenta',
   powderBlue: 'powderblue',
   silver: 'silver',
-  white: 'white'
+  white: 'white',
+  steelblue: 'steelblue'
 }
 
 
